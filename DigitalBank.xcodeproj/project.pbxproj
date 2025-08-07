@@ -35,6 +35,25 @@
 		52F442772E421DEA00BD474D /* DigitalBankUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DigitalBankUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		52EB716C2E44A89800FF5E55 /* Exceptions for "DigitalBankTests" folder in "DigitalBank" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SwapKey/Doubles/SwapKeyClientSpy.swift,
+				SwapKey/Doubles/SwapKeyRepositorySpy.swift,
+			);
+			target = 52F442592E421DE900BD474D /* DigitalBank */;
+		};
+		52EB716D2E44A89800FF5E55 /* Exceptions for "DigitalBankTests" folder in "DigitalBankTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SwapKey/Doubles/SwapKeyClientSpy.swift,
+				SwapKey/Doubles/SwapKeyRepositorySpy.swift,
+			);
+			target = 52F4426C2E421DEA00BD474D /* DigitalBankTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		52F4425C2E421DE900BD474D /* DigitalBank */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -43,6 +62,10 @@
 		};
 		52F442702E421DEA00BD474D /* DigitalBankTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				52EB716C2E44A89800FF5E55 /* Exceptions for "DigitalBankTests" folder in "DigitalBank" target */,
+				52EB716D2E44A89800FF5E55 /* Exceptions for "DigitalBankTests" folder in "DigitalBankTests" target */,
+			);
 			path = DigitalBankTests;
 			sourceTree = "<group>";
 		};
