@@ -9,16 +9,10 @@ import Foundation
 
 final class SwapKeyClientSpy: SwapKeyClient {
     private(set) var receivedRequests: [SwapKeyModels.Request] = []
-    var resultToReturn: Result<SwapKeyModels.Response, Error> = .failure(
-        URLError(.notConnectedToInternet)
-    )
+    var resultToReturn: SwapKeyModels.Response?
 
     func send(request: SwapKeyModels.Request) async throws -> SwapKeyModels.Response {
         receivedRequests.append(request)
-
-        switch resultToReturn {
-        case .success(let response): return response
-        case .failure(let error): throw error
-        }
+        return resultToReturn ?? .init()
     }
 }
