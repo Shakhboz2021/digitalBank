@@ -9,7 +9,7 @@ import XCTest
 @testable import DigitalBank
 
 final class SwapKeyUseCaseTests: XCTestCase {
-    
+    // Sad cases
     func test_init_doesNotSendRequest() async {
         let client = SwapKeyClientSpy()
         _ = SwapKeyUseCaseImpl(client: client) // init
@@ -25,7 +25,7 @@ final class SwapKeyUseCaseTests: XCTestCase {
         let expectedError = NSError(domain: "Test", code: 1)
         client.resultToReturn = .failure(expectedError)
         
-        // Whem & Then
+        // When & Then
         do {
             _ = try await useCase.execute(request: .mock)
             XCTFail("Expected to throw but did not")
@@ -34,4 +34,21 @@ final class SwapKeyUseCaseTests: XCTestCase {
         }
         
     }
+    
+    // Happy case
+    func test_excute_shouldReturnResponse_whenClientSucceeds() async throws {
+        // Given
+        let client = SwapKeyClientSpy()
+        let expectedResponse = SwapKeyModels.Response.mock
+        client.resultToReturn = .success(expectedResponse)
+        let sut = SwapKeyUseCaseImpl(client: client)
+        
+        // When
+        let result = try await sut.execute(request: .mock)
+        
+        // Then
+        XCTAssertEqual(result, expectedResponse)
+        XCTAssertEqual(client.receivedRequests, [.mock])
+    }
+    
 }
