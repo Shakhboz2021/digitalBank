@@ -9,6 +9,14 @@ import XCTest
 @testable import DigitalBank
 
 final class SwapKeyUseCaseTests: XCTestCase {
+    
+    func test_init_doesNotSendRequest() async {
+        let client = SwapKeyClientSpy()
+        _ = SwapKeyUseCaseImpl(client: client) // init
+        
+        XCTAssertTrue(client.receivedRequests.isEmpty)
+    }
+    
     func test_execute_shouldThrowError_whenClientFails() async {
         // Given
         let client = SwapKeyClientSpy()
