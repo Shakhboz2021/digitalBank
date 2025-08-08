@@ -18,6 +18,6 @@ enum SwapKeyModels {
     struct Response: Equatable {
         var code: Int?
         var msg: String?
-        var enecnryptData: String?
+        var ecnryptData: String?
     }
 }
