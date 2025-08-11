@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct DigitalBankApp: App {
-    let persistenceController = PersistenceController.shared
+    @StateObject private var container = DIContainer()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(container)
         }
     }
 }
