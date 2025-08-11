@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SwapKeyRepositotyImpl: SwapKeyRepository {
+class SwapKeyRepositoryImpl: SwapKeyRepository {
     private let client: SwapKeyClient
     
     init(client: SwapKeyClient) {
