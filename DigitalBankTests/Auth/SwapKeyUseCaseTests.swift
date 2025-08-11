@@ -11,19 +11,19 @@ import XCTest
 final class SwapKeyUseCaseTests: XCTestCase {
     // Sad cases
     func test_init_doesNotSendRequest() async {
-        let client = SwapKeyClientSpy()
-        _ = SwapKeyUseCaseImpl(client: client) // init
+        let repo = SwapKeyRepositorySpy()
+        _ = SwapKeyUseCaseImpl(repository: repo) // init
         
-        XCTAssertTrue(client.receivedRequests.isEmpty)
+        XCTAssertTrue(repo.receivedRequests.isEmpty)
     }
     
     func test_execute_shouldThrowError_whenClientFails() async {
         // Given
-        let client = SwapKeyClientSpy()
-        let useCase = SwapKeyUseCaseImpl(client: client)
+        let repo = SwapKeyRepositorySpy()
+        let useCase = SwapKeyUseCaseImpl(repository: repo)
         
         let expectedError = NSError(domain: "Test", code: 1)
-        client.resultToReturn = .failure(expectedError)
+        repo.resultToReturn = .failure(expectedError)
         
         // When & Then
         do {
@@ -38,17 +38,17 @@ final class SwapKeyUseCaseTests: XCTestCase {
     // Happy case
     func test_excute_shouldReturnResponse_whenClientSucceeds() async throws {
         // Given
-        let client = SwapKeyClientSpy()
+        let repo = SwapKeyRepositorySpy()
         let expectedResponse = SwapKeyModels.Response.mock
-        client.resultToReturn = .success(expectedResponse)
-        let sut = SwapKeyUseCaseImpl(client: client)
+        repo.resultToReturn = .success(expectedResponse)
+        let sut = SwapKeyUseCaseImpl(repository: repo)
         
         // When
         let result = try await sut.execute(request: .mock)
         
         // Then
         XCTAssertEqual(result, expectedResponse)
-        XCTAssertEqual(client.receivedRequests, [.mock])
+        XCTAssertEqual(repo.receivedRequests, [.mock])
     }
     
 }
