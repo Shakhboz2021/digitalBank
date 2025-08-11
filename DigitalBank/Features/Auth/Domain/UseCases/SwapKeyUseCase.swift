@@ -8,18 +8,21 @@
 import Foundation
 
 protocol SwapKeyUseCase {
-    func execute(request: SwapKeyModels.Request) async throws -> SwapKeyModels.Response
+    func execute(request: SwapKeyModels.Request) async throws
+        -> SwapKeyModels.Response
 }
 
 final class SwapKeyUseCaseImpl: SwapKeyUseCase {
-    private let client: SwapKeyClient
-    
-    init(client: SwapKeyClient) {
-        self.client = client
+    private let repository: SwapKeyRepository
+
+    init(repository: SwapKeyRepository) {
+        self.repository = repository
     }
-    
-    func execute(request: SwapKeyModels.Request) async throws -> SwapKeyModels.Response {
-        try await client.send(request: request)
+
+    func execute(request: SwapKeyModels.Request) async throws
+        -> SwapKeyModels.Response
+    {
+        try await repository.swapKey(request: request)
     }
 
 }
