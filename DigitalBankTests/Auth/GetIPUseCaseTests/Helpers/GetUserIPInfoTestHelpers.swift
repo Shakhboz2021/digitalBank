@@ -61,11 +61,11 @@ extension GetUserIPInfoUseCaseTests {
                     line: line
                 )
             }
-        case .failure(let failure):
+        case .failure(let error):
             do {
                 _ = try await suit.execute()
                 XCTFail(
-                    "Expected failure but got success",
+                    "Expected failure but got success \(error)",
                     file: file,
                     line: line
                 )

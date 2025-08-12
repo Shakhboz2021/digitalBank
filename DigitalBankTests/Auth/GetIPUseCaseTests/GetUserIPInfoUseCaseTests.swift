@@ -15,4 +15,13 @@ class GetUserIPInfoUseCaseTests: XCTestCase {
         
         XCTAssertTrue(repo.receivedRequests.isEmpty)
     }
+    
+    func test_execute_propogateRepositoryError() async {
+        let (suit, repo) = makeSUIT()
+        let expectedError = NSError(domain: "Test", code: 1)
+        
+        await expect(suit, repo: repo, toCompleteWith: .failure(expectedError))
+    }
+    
+    
 }
