@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 @testable import DigitalBank
 
 extension UserIPInfo {

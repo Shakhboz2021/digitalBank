@@ -23,5 +23,11 @@ class GetUserIPInfoUseCaseTests: XCTestCase {
         await expect(suit, repo: repo, toCompleteWith: .failure(expectedError))
     }
     
-    
+    // Happy case tests
+    func test_execute_deliversUserIPInfoOnSuccess() async {
+        let (suit, repo) = makeSUIT()
+        let expected: UserIPInfo = .mock
+        
+        await expect(suit, repo: repo, toCompleteWith: .success(expected))
+    }
 }
