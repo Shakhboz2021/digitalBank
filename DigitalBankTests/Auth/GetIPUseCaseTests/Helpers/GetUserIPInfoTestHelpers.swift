@@ -26,7 +26,10 @@ extension GetUserIPInfoUseCaseTests {
         trackForMemoryLeaks(repo, file: file, line: line)
         return (suit, repo)
     }
-
+    
+    // Kutilgan natija (success/failure)ni tekshiruvchi umumiy helper
+    // SRP: verifikatsiya mantiqi bitta joyda
+    // Deterministik: spy orqali natijani oldindan beramiz
     func expect(
         _ suit: GetUserIPInfoUseCase,
         repo: GetUserIPInfoRepositorySpy,
