@@ -8,5 +8,5 @@
 import Foundation
 
 protocol GetUserIPInfoRepository {
-    func getUserIPInfo() -> async throws -> UserIPInfo
+    func getUserIPInfo() async throws -> UserIPInfo
 }
