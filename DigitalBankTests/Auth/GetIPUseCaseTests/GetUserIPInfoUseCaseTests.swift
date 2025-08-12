@@ -8,14 +8,14 @@
 import XCTest
 @testable import DigitalBank
 
-class GetIPUseCaseTests: XCTestCase {
+class GetUserIPInfoUseCaseTests: XCTestCase {
     // What + When + From/Where
     func test_init_doesNotRequestIPFromRepository() {
         // MARK: - Given
-        let repo = GetIPRepositorySpy()
+        let repo = GetUserIPInfoRepositorySpy()
         
         // MARK: - When
-        _ = GetIPUseCaseImpl(repository: repo)
+        _ = GetUserIPInfoUseCaseImpl(repository: repo)
         
         //MARK: - Then
         XCTAssertTrue(repo.receivedRequests.isEmpty)
