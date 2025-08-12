@@ -12,7 +12,7 @@ protocol AuthAssembling {
 }
 
 class AuthAssembly: AuthAssembling {
-    func makeSwapKeyUseCase() -> SwapKeyUseCase {
+    func makeSwapKeyUseCase() -> SwapKeyUseCase { // Dependency Inversion
         let client = SwapKeyClientImpl(url: SwapKeyEndpoint.swapKey)
         let repository = SwapKeyRepositoryImpl(client: client)
         return SwapKeyUseCaseImpl(repository: repository)
