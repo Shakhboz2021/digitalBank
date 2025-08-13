@@ -19,7 +19,7 @@ final class GetUserIPInfoRepositoryTests: XCTestCase {
         XCTAssertTrue(client.receivedRequests.isEmpty)
     }
 
-    func test_execute_propogateClientError() async throws {
+    func test_getUserIPInfo_propogateClientError() async throws {
         // Given
         let client = GetUserIPInfoClientSpy()
         let sut = GetUserIPInfoRepositoryImpl(client: client)
@@ -33,5 +33,17 @@ final class GetUserIPInfoRepositoryTests: XCTestCase {
             XCTAssertEqual((error as NSError).domain, expectedError.domain)
             XCTAssertEqual((error as NSError).code, expectedError.code)
         }
+    }
+    
+    func test_getUserIPInfo_deliversDomainModelOnSuccess() async throws {
+        // Given
+        let client = GetUserIPInfoClientSpy()
+        let sut = GetUserIPInfoRepositoryImpl(client: client)
+        client.resultToReturn = .success(.mock)
+        // When
+        let received = try await sut.getUserIPInfo()
+        //Then
+        XCTAssertEqual(received, UserIPInfoDTO.mock.toDomain())
+        XCTAssertEqual(client.receivedRequests.count, 1)
     }
 }
