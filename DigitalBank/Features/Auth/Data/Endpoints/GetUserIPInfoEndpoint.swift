@@ -8,6 +8,6 @@
 import Foundation
 enum GetUserIPInfoEndpoint {
     static var url: URL {
-        AppConfig.baseURL
+        ExternalConfig.getUserIPInfoURL
     }
 }
