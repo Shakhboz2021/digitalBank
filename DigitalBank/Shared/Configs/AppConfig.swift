@@ -10,7 +10,7 @@ import Foundation
 enum AppConfig {
     enum Environment {
         case production
-        case staging
+        case ip
         case development
     }
     static let environment: Environment = .production
@@ -18,8 +18,8 @@ enum AppConfig {
         switch environment {
         case .production:
             URL(string: "https://ra.ubank.uz/api")!
-        case .staging:
-            URL(string: "https://api.staging.digitalbank.id")!
+        case .ip:
+            URL(string: "https://requestid.universalbank.uz/api/request/identify/")!
         case .development:
             URL(string: "https://my.fido.uz/dbgmkb/")!
         }

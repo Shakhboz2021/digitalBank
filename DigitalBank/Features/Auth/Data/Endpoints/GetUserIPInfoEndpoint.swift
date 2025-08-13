@@ -8,6 +8,6 @@
 import Foundation
 enum GetUserIPInfoEndpoint {
     static var url: URL {
-        URL(string: "https://requestid.universalbank.uz/api/request/identify/")!  
+        AppConfig.baseURL
     }
 }
