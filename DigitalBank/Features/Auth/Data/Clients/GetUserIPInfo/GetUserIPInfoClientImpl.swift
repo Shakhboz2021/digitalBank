@@ -7,10 +7,10 @@
 import Foundation
 
 class GetUserIPInfoClientImpl: GetUserIPInfoClient {
-    private let session: URLSession
+    private let session: NetworkSession
     private let url: URL
 
-    init(session: URLSession = .shared, url: URL) {
+    init(session: NetworkSession, url: URL) {
         self.session = session
         self.url = url
     }

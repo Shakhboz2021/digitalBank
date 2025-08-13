@@ -13,14 +13,20 @@ protocol AuthAssembling {
 }
 
 class AuthAssembly: AuthAssembling {
-
-    func makeSwapKeyUseCase() -> SwapKeyUseCase { // Dependency Inversion
+    private let network: NetworkSession
+    init(network: NetworkSession = DefaultNetworkSession()) {
+        self.network = network
+    }
+    func makeSwapKeyUseCase() -> SwapKeyUseCase {  // Dependency Inversion
         let client = SwapKeyClientImpl(url: SwapKeyEndpoint.swapKey)
         let repository = SwapKeyRepositoryImpl(client: client)
         return SwapKeyUseCaseImpl(repository: repository)
     }
     func makeGetUserIPInfoUseCase() -> any GetUserIPInfoUseCase {
-        let client = GetUserIPInfoClientImpl(url: GetUserIPInfoEndpoint.url)
+        let client = GetUserIPInfoClientImpl(
+            session: network,
+            url: GetUserIPInfoEndpoint.url
+        )
         let repository = GetUserIPInfoRepositoryImpl(client: client)
         return GetUserIPInfoUseCaseImpl(repository: repository)
     }
