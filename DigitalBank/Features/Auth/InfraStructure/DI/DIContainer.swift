@@ -12,8 +12,4 @@ final class DIContainer: ObservableObject {
     init(auth: AuthAssembling = AuthAssembly()) {
         self.auth = auth
     }
-    
-    func makeGetUserIPInfoUseCase() -> GetUserIPInfoUseCase {
-        auth.makeGetUserIPInfoUseCase()
-    }
 }
