@@ -18,7 +18,10 @@ class AuthAssembly: AuthAssembling {
         self.network = network
     }
     func makeSwapKeyUseCase() -> SwapKeyUseCase {  // Dependency Inversion
-        let client = SwapKeyClientImpl(url: SwapKeyEndpoint.swapKey)
+        let client = SwapKeyClientImpl(
+            network: network,
+            url: SwapKeyEndpoint.swapKey
+        )
         let repository = SwapKeyRepositoryImpl(client: client)
         return SwapKeyUseCaseImpl(repository: repository)
     }

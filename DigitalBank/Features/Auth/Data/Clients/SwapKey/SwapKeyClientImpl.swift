@@ -8,11 +8,11 @@
 import Foundation
 
 class SwapKeyClientImpl: SwapKeyClient {
-    private let session: URLSession
+    private let network: NetworkSession
     private let url: URL
 
-    init(session: URLSession = .shared, url: URL) {
-        self.session = session
+    init(network: NetworkSession, url: URL) {
+        self.network = network
         self.url = url
     }
 
@@ -35,7 +35,7 @@ class SwapKeyClientImpl: SwapKeyClient {
         ]
 
         urlRequest.httpBody = try JSONSerialization.data(withJSONObject: body)
-        let (data, response) = try await session.data(for: urlRequest)
+        let (data, response) = try await network.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse,
             (200..<300).contains(httpResponse.statusCode)
