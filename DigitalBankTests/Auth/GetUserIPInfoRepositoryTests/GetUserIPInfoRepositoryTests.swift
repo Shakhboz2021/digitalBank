@@ -9,5 +9,12 @@ import XCTest
 @testable import DigitalBank
 
 final class GetUserIPInfoRepositoryTests: XCTestCase {
-    
+    func test_init_doesNotRequestFromClient() {
+        // Given
+        let client = GetUserIPInfoClientSpy()
+        // When
+        _ = GetUserIPInfoRepositoryImpl(client: client)
+        // Then
+        XCTAssertTrue(client.receivedRequests.isEmpty)
+    }
 }

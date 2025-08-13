@@ -8,7 +8,7 @@
 import Foundation
 @testable import DigitalBank
 
-class GetUserIPClientSpy: GetUserIPInfoClient {
+class GetUserIPInfoClientSpy: GetUserIPInfoClient {
     private(set) var receivedRequests: [Void] = []
     var resultToReturn: Result<UserIPInfoDTO, Error>?
     

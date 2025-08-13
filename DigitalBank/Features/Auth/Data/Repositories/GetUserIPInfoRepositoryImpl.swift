@@ -9,7 +9,7 @@ import Foundation
 
 class GetUserIPInfoRepositoryImpl: GetUserIPInfoRepository {
     let client: GetUserIPInfoClient
-    init(client: GetUserIPInfoClientImpl) {
+    init(client: GetUserIPInfoClient) {
         self.client = client
     }
     func getUserIPInfo() async throws -> UserIPInfo {
