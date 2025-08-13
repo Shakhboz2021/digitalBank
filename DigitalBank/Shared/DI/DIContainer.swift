@@ -11,10 +11,10 @@ final class DIContainer: ObservableObject {
     let auth: AuthAssembling
     let network: NetworkAssembling
     init(
-        auth: AuthAssembling = AuthAssembly(),
         network: NetworkAssembling = NetworkAssembly()
     ) {
-        self.auth = auth
         self.network = network
+        let session = network.makeNetworkSession()
+        self.auth = AuthAssembly(network: session)
     }
 }

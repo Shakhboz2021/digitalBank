@@ -24,7 +24,7 @@ class AuthAssembly: AuthAssembling {
     }
     func makeGetUserIPInfoUseCase() -> any GetUserIPInfoUseCase {
         let client = GetUserIPInfoClientImpl(
-            session: network,
+            network: network,
             url: GetUserIPInfoEndpoint.url
         )
         let repository = GetUserIPInfoRepositoryImpl(client: client)

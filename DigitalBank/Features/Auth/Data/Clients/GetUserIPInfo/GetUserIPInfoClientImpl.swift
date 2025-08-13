@@ -7,11 +7,11 @@
 import Foundation
 
 class GetUserIPInfoClientImpl: GetUserIPInfoClient {
-    private let session: NetworkSession
+    private let network: NetworkSession
     private let url: URL
 
-    init(session: NetworkSession, url: URL) {
-        self.session = session
+    init(network: NetworkSession, url: URL) {
+        self.network = network
         self.url = url
     }
     /// QUERY (CQS tamoyiliga ko‘ra: holatni o‘zgartirmaydi, faqat ma'lumot qaytaradi)
@@ -20,7 +20,7 @@ class GetUserIPInfoClientImpl: GetUserIPInfoClient {
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
 
-        let (data, response) = try await session.data(for: request)
+        let (data, response) = try await network.data(for: request)
         guard let http = response as? HTTPURLResponse,
             (200..<300).contains(
                 http.statusCode
