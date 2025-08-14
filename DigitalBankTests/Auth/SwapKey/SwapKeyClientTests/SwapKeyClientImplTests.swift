@@ -10,4 +10,12 @@ import XCTest
 
 class SwapKeyClientImplTests: XCTestCase {
     
+    func test_init_doesNotRequestAnyData() {
+        let spy = NetworkSessionSpy()
+        _ = SwapKeyClientImpl(network: spy, url: URL(string: "https://any-url.com")!)
+        XCTAssertEqual(spy.receivedRequests.count, 1)
+    }
+    
+    
+    
 }
