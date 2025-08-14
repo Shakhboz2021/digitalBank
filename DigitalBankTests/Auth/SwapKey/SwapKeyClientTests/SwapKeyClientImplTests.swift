@@ -13,9 +13,27 @@ class SwapKeyClientImplTests: XCTestCase {
     func test_init_doesNotRequestAnyData() {
         let spy = NetworkSessionSpy()
         _ = SwapKeyClientImpl(network: spy, url: URL(string: "https://any-url.com")!)
-        XCTAssertEqual(spy.receivedRequests.count, 1)
+        XCTAssertEqual(spy.receivedRequests.count, 0)
     }
     
-    
+    func test_swapKey_propogatesNetworkError() async {
+        // Given
+        let spy = NetworkSessionSpy()
+        let url = URL(string: "https://any-url.com")!
+        let sut = SwapKeyClientImpl(network: spy, url: url)
+        
+        let expectedError = URLError(.timedOut)
+        spy.result = .failure(expectedError)
+        
+        // When & Then
+        
+        do {
+            _ = try await sut.send(request: .mock)
+            XCTFail("Expected to throw, go success")
+        } catch {
+            XCTAssertEqual((error as? URLError)?.code, expectedError.code)
+        }
+        
+    }
     
 }
