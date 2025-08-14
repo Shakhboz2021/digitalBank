@@ -36,4 +36,28 @@ class SwapKeyClientImplTests: XCTestCase {
         
     }
     
+    func test_swapKey_deliversResponseOn200() async {
+        // Given
+        let spy = NetworkSessionSpy()
+        let url = URL(string: "https://any-url.com")!
+        let sut = SwapKeyClientImpl(network: spy, url: url)
+        
+        let expected = SwapKeyModels.Response.mock
+        let data = try JSONEncoder().encode(expected)
+        let http = HTTPURLResponse(
+            url: url,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: ["Content-Type": "application/json"]
+        )
+        spy.result = .success((data, http))
+        
+        // When
+        let received = try await sut.send(request: .mock)
+        
+        // Then
+        XCTAssertEqual(received, expected)
+        XCTAssertEqual(spy.receivedRequests.count, 1)
+    }
+    
 }
