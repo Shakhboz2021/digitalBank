@@ -69,6 +69,23 @@ final class SwapKeyClientImplTests: XCTestCase {
             XCTAssertEqual(spy.receivedRequests.count, 1)
         }
     }
+    
+    func test_swapKey_failsOnHTTP500() async {
+            // AAA
+            // MARK: - Arrange
+        let body = Data(#"{"code":500,"msg":"Bad Request"}"#.utf8)
+        let http = HTTTPTest.response(url: url, status: 500)
+        spy.result = .success((body, http))
+        
+            // MARK: - Act & Assert
+        do {
+            _ = try await sut.send(request: .mock)
+            XCTFail("Expected error on 500, but get success")
+        } catch {
+            XCTAssertEqual((error as? URLError)?.code, .badServerResponse)
+            XCTAssertEqual(spy.receivedRequests.count, 1)
+        }
+    }
 
     func test_swapKey_deliversResponseOn200() async throws {
         // (Arrange)Given
