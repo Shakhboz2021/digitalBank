@@ -25,15 +25,10 @@ class SwapKeyClientImpl: SwapKeyClient {
             "application/json",
             forHTTPHeaderField: "Content-Type"
         )
-        // Hozircha: JSONSerialization (YAGNI). Keyin RequestDTO ga o‘tamiz.
-        let body = [
-            "public_key1": request.public_key1,
-            "public_key2": request.public_key2,
-            "encryptData": request.encryptData,
-            "device_code": request.device_code,
-            "phone_nember": request.phoneNumber ?? "",
-        ]
-        urlRequest.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        // DTO & Encodable (SRP/DRY)
+        let requestDTO = SwapKeyDTO.Request(domain: request)
+        urlRequest.httpBody = try JSONEncoder().encode(requestDTO)
 
         let data: Data
         let response: URLResponse
