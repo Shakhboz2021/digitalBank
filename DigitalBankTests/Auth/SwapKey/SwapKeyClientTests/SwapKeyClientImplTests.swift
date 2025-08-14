@@ -6,6 +6,7 @@
 //
 
 import XCTest
+
 @testable import DigitalBank
 
 final class SwapKeyClientImplTests: XCTestCase {
@@ -21,14 +22,14 @@ final class SwapKeyClientImplTests: XCTestCase {
         url = URL(string: "https://any-url.com/swap-key")!
         sut = SwapKeyClientImpl(network: spy, url: url)
     }
-    
+
     override func tearDown() {
         spy = nil
         url = nil
         sut = nil
         super.tearDown()
     }
-    
+
     func test_init_doesNotRequestAnyData() {
         _ = SwapKeyClientImpl(
             network: spy,
@@ -52,14 +53,14 @@ final class SwapKeyClientImplTests: XCTestCase {
         }
 
     }
-    
+
     func test_swapKey_failsOnHTTP400() async {
         // AAA
         // MARK: - Arrange
         let body = Data(#"{"code":400,"msg":"Bad Request"}"#.utf8)
         let http = HTTTPTest.response(url: url, status: 400)
         spy.result = .success((body, http))
-        
+
         // MARK: - Act & Assert
         do {
             _ = try await sut.send(request: .mock)
@@ -69,15 +70,15 @@ final class SwapKeyClientImplTests: XCTestCase {
             XCTAssertEqual(spy.receivedRequests.count, 1)
         }
     }
-    
+
     func test_swapKey_failsOnHTTP500() async {
-            // AAA
-            // MARK: - Arrange
+        // AAA
+        // MARK: - Arrange
         let body = Data(#"{"code":500,"msg":"Bad Request"}"#.utf8)
         let http = HTTTPTest.response(url: url, status: 500)
         spy.result = .success((body, http))
-        
-            // MARK: - Act & Assert
+
+        // MARK: - Act & Assert
         do {
             _ = try await sut.send(request: .mock)
             XCTFail("Expected error on 500, but get success")
@@ -110,6 +111,36 @@ final class SwapKeyClientImplTests: XCTestCase {
         // (Assert)Then
         XCTAssertEqual(received, expectedDTO.toDomain())
         XCTAssertEqual(spy.receivedRequests.count, 1)
+    }
+
+    func test_send_encodesRequestBodyWithDTO() async throws {
+        // Arrange
+        let expectedDTO = SwapKeyDTO.Request.mock
+        // Network javobi kerak emas; faqat body tekshiramiz
+        let okBody = try JSONEncoder().encode(SwapKeyDTO.Response.mock) // Data
+        let ok = HTTTPTest.response(url: url, status: 200) // HTTPURLResponse
+        spy.result = .success((okBody, ok))
+
+        // Act
+        _ = try await sut.send(request: .mock)
+
+        // Assert
+        guard let sent = spy.receivedRequests.first, let body = sent.httpBody
+        else {
+            return XCTFail("No request sent or body is nil")
+        }
+
+        let expectedBody = try JSONEncoder().encode(expectedDTO)
+
+        // JSON byte-for-byte tengligini tekshiramiz
+        XCTAssertEqual(body, expectedBody)
+
+        // (ixtiyoriy) Header va method ham to‘g‘ri
+        XCTAssertEqual(sent.httpMethod, "POST")
+        XCTAssertEqual(
+            sent.value(forHTTPHeaderField: "Content-Type"),
+            "application/json"
+        )
     }
 
 }
