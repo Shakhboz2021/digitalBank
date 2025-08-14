@@ -42,8 +42,8 @@ class SwapKeyClientImplTests: XCTestCase {
         let url = URL(string: "https://any-url.com")!
         let sut = SwapKeyClientImpl(network: spy, url: url)
         
-        let expected = SwapKeyModels.Response.mock
-        let data = try JSONEncoder().encode(expected)
+        let expectedDTO = SwapKeyDTO.Response.mock
+        let data = try JSONEncoder().encode(expectedDTO)
         let http = HTTPURLResponse(
             url: url,
             statusCode: 200,
@@ -56,7 +56,7 @@ class SwapKeyClientImplTests: XCTestCase {
         let received = try await sut.send(request: .mock)
         
         // Then
-        XCTAssertEqual(received, expected)
+        XCTAssertEqual(received, expectedDTO)
         XCTAssertEqual(spy.receivedRequests.count, 1)
     }
     

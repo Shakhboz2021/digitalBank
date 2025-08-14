@@ -6,7 +6,7 @@
 //
 
 enum SwapKeyDTO {
-    struct Response: Decodable {
+    struct Response: Codable {
         let code: Int?
         let msg: String?
         let ecnryptData: String?
