@@ -9,6 +9,12 @@ import Foundation
 
 @testable import DigitalBank
 
+extension SwapKeyDTO.Request {
+    static var mock: Self {
+        .init(domain: .mock)
+    }
+}
+
 extension SwapKeyDTO.Response {
     static var mock: Self {
         .init(
