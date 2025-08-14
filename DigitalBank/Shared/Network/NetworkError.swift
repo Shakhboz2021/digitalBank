@@ -12,5 +12,5 @@ enum NetworkError: Error {
     case non2xx(status: Int)
     case decodingFailed(underlying: Error?)
     case transport(underlying: Error)
-    case invalidREsponse
+    case invalidResponse
 }

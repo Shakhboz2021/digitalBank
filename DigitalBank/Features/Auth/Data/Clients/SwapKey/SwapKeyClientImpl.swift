@@ -25,7 +25,7 @@ class SwapKeyClientImpl: SwapKeyClient {
             "application/json",
             forHTTPHeaderField: "Content-Type"
         )
-
+        // Hozircha: JSONSerialization (YAGNI). Keyin RequestDTO ga o‘tamiz.
         let body = [
             "public_key1": request.public_key1,
             "public_key2": request.public_key2,
@@ -33,21 +33,33 @@ class SwapKeyClientImpl: SwapKeyClient {
             "device_code": request.device_code,
             "phone_nember": request.phoneNumber ?? "",
         ]
-
         urlRequest.httpBody = try JSONSerialization.data(withJSONObject: body)
-        let (data, response) = try await network.data(for: urlRequest)
 
-        guard let httpResponse = response as? HTTPURLResponse,
-            (200..<300).contains(httpResponse.statusCode)
-        else {
-            throw URLError(.badServerResponse)
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await network.data(for: urlRequest)
+        } catch {
+            throw NetworkError.transport(underlying: error)
         }
-        let decoded = try JSONDecoder().decode(
-            SwapKeyDTO.Response.self,
-            from: data
-        )
 
-        return decoded.toDomain()
+        guard let http = response as? HTTPURLResponse else {
+            throw NetworkError.invalidResponse
+        }
+
+        guard (200...299).contains(http.statusCode) else {
+            throw NetworkError.non2xx(status: http.statusCode)
+        }
+
+        do {
+            let dto = try JSONDecoder().decode(
+                SwapKeyDTO.Response.self,
+                from: data
+            )
+            return dto.toDomain()
+        } catch {
+            throw NetworkError.decodingFailed(underlying: error)
+        }
 
     }
 
