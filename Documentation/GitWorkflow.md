@@ -1,54 +1,58 @@
 # 🧬 Git Workflow for DigitalBank iOS Team
 
-This document describes the Git branching model, commit conventions, PR workflow, and merge rules used by the DigitalBank iOS team.
+This document defines the Git branching model, commit conventions, MR workflow, and merge rules used by the **DigitalBank iOS** team.
 
 ---
 
 ## 🌱 Branch Types
 
-| Type       | Purpose                                  |
-|------------|------------------------------------------|
-| `main`     | Production-ready, deployed code only     |
-| `develop`  | Development base, stable intermediate    |
-| `feature/*`| New features in development              |
-| `bugfix/*` | Minor bug fixes                          |
-| `hotfix/*` | Critical fixes directly to production    |
-| `release/*`| Preparation for production releases      |
+Biz **Protected Branch** sifatida faqat `main`dan foydalanamiz — unga to‘g‘ridan-to‘g‘ri push qilish taqiqlangan, faqat MR orqali merge bo‘ladi.
+
+| Type          | Purpose                                            |
+|---------------|----------------------------------------------------|
+| `main`        | Production-ready, deployed code only               |
+| `feat/*`      | New feature in development                         |
+| `fix/*`       | Bug fixes (non-critical)                           |
+| `ref/*`       | Refactor/improvement without changing behavior     |
+| `test/*`      | Test-only changes                                  |
+| `docs/*`      | Documentation changes                              |
+| `chore/*`     | Build/config/maintenance tasks                     |
+| `release/*`   | Preparation for release (if needed)                |
+| `hotfix/*`    | Critical fix directly to production                |
 
 ### ✅ Example Branch Names
-
-- `feature/auth-login-flow`
-- `bugfix/fix-ip-localization`
-- `hotfix/crash-on-launch`
+- `feat/auth-swapkey-usecase`
+- `fix/network-decoding-error`
+- `ref/login-mapper-cleanup`
+- `test/getuseripinfo-client-spy`
+- `docs/gitworkflow-update`
 
 ---
 
 ## 📛 Commit Message Conventions
 
-We follow [Conventional Commits](https://www.conventionalcommits.org/).
+Biz **Conventional Commits** formatidan foydalanamiz.
 
 ### Format
-
 ```
 <type>(scope): message
 ```
 
-### Types
-
+**Types**
 - `feat` – New feature
 - `fix` – Bug fix
-- `refactor` – Code refactoring
-- `docs` – Documentation only
-- `test` – Test files only
-- `chore` – Build system/config changes
-- `ci` – CI/CD related changes
+- `refactor` – Code refactor
+- `test` – Test only
+- `docs` – Documentation
+- `chore` – Build/config/maintenance
+- `ci` – CI/CD changes
 
-### Examples
-
+**Examples**
 ```
-feat(auth): add biometric login
-fix(swapkey): correct retry policy on error
-refactor(login): separate encryption logic
+feat(auth): implement SwapKeyUseCase with tests
+fix(network): correct error mapping for non2xx responses
+refactor(ipinfo): extract DTO mapping to separate layer
+test(auth): add sad path tests for SwapKeyUseCase
 docs(readme): add setup instructions
 ```
 
@@ -56,47 +60,65 @@ docs(readme): add setup instructions
 
 ## 🔀 Merge Request (MR) Process
 
-1. Pull latest develop: `git checkout develop && git pull`
-2. Create new branch: `git checkout -b feature/your-task`
-3. Implement your changes
-4. Commit with conventional commit format
-5. Push: `git push origin feature/your-task`
-6. Create Merge Request (MR) in GitLab
-7. Use template `.gitlab/merge_request_templates/default.md`
+1. **Update local main**:
+   ```sh
+   git checkout main
+   git pull --ff-only
+   ```
+2. **Create branch**:
+   ```sh
+   git checkout -b feat/your-task
+   ```
+3. Implement changes (small, focused commits)
+4. Commit using Conventional Commits
+5. Push branch:
+   ```sh
+   git push -u origin feat/your-task
+   ```
+6. Open MR in GitLab:
+   - **Source**: `feat/...`
+   - **Target**: `main`
+7. Fill MR template (`.gitlab/merge_request_templates/default.md`)
 8. Assign reviewer(s)
-9. Merge only when all checks pass and MR is approved
+9. Merge only when:
+   - ✅ All checks pass (CI green)
+   - ✅ All review threads resolved
+   - ✅ At least one approval
 
 ---
 
 ## ✅ Review Checklist
 
-- [ ] Tests added or updated
+- [ ] Unit tests added/updated (sad + happy path)
 - [ ] Passes `swiftlint`
-- [ ] No force unwrapping (`!`)
-- [ ] No print/debug statements
+- [ ] No `print`/debug statements
+- [ ] No force-unwrap (`!`) unless justified
 - [ ] No leftover `TODO:` comments
-- [ ] All public APIs are documented
+- [ ] DIP, CQS, YAGNI, LoD respected
+- [ ] DTO ↔ Domain mapping is in proper layer
+- [ ] Public APIs documented
 
 ---
 
-## 🧪 Pre-Merge Checks
+## 🧪 Pre-Merge Checks (CI)
 
-- ✅ Unit tests must pass (`xcodebuild test`)
-- ✅ Linting (`swiftlint`)
+- ✅ Unit tests pass (`xcodebuild test`)
+- ✅ Lint (`swiftlint`)
 - ✅ Dangerfile checks (if enabled)
-- ✅ Code coverage >= 80%
+- ✅ Code coverage ≥ 80% (target)
 
 ---
 
 ## 📦 Merge Strategy
 
 - **Always rebase** before merge
-- **Squash commits** before merging to `develop` or `main`
-- No merge commits allowed
+- **Squash merge** into `main`
+- Delete source branch after merge
 
+Example rebase before push:
 ```sh
 git fetch origin
-git rebase origin/develop
+git rebase origin/main
 git push --force-with-lease
 ```
 
@@ -104,24 +126,27 @@ git push --force-with-lease
 
 ## 🏷 Release Tagging
 
-Use semantic versioning (SemVer):
-
+Semantic Versioning (`MAJOR.MINOR.PATCH`):
+```sh
+git tag -a v1.3.0 -m "Add GetUserIPInfoUseCase and NetworkError mapping"
+git push origin v1.3.0
 ```
-git tag -a v1.2.0 -m "Add 2FA login support"
-git push origin v1.2.0
-```
-
-Format: `MAJOR.MINOR.PATCH`
 
 ---
 
 ## 🧠 Notes
 
-- Keep branches small and focused
-- Write self-explanatory commit messages
-- Review others' code thoroughly
-- Update `Documentation/NamingConvention.md` when naming rules evolve
+- Branches small and focused → easier review
+- Commit messages self-explanatory
+- MR discussion should close all questions before merge
+- Update `Documentation/NamingConvention.md` and `Documentation/Architecture.md` when conventions evolve
+- Protected branch rules enforced in GitLab:
+  - ✅ MR only
+  - ✅ At least 1 approval
+  - ✅ CI must pass
+  - ✅ Squash required
 
 ---
 
-Maintained by the iOS Team Lead
+Maintained by **iOS Team Lead – DigitalBank**
+
