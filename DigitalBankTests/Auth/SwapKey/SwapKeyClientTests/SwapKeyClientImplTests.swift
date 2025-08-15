@@ -117,8 +117,8 @@ final class SwapKeyClientImplTests: XCTestCase {
         // Arrange
         let expectedDTO = SwapKeyDTO.Request.mock
         // Network javobi kerak emas; faqat body tekshiramiz
-        let okBody = try JSONEncoder().encode(SwapKeyDTO.Response.mock) // Data
-        let ok = HTTTPTest.response(url: url, status: 200) // HTTPURLResponse
+        let okBody = try JSONEncoder().encode(SwapKeyDTO.Response.mock)  // Data
+        let ok = HTTTPTest.response(url: url, status: 200)  // HTTPURLResponse
         spy.result = .success((okBody, ok))
 
         // Act
@@ -142,33 +142,76 @@ final class SwapKeyClientImplTests: XCTestCase {
             "application/json"
         )
     }
-    
+
     func test_send_usesInjectedEncoderDecoder() async throws {
         // Arrange
         let customEncoder = JSONEncoder()
         let customDecoder = JSONDecoder()
-        
+
         let expectedDTO = SwapKeyDTO.Request.mock
         let encodedBody = try customEncoder.encode(expectedDTO)
-        
+
         let okResponse = HTTTPTest.response(url: url, status: 200)
-        let okBody = try customEncoder.encode(SwapKeyDTO.Request.mock)
+        let okBody = try customEncoder.encode(SwapKeyDTO.Response.mock)
         spy.result = .success((okBody, okResponse))
-        
+
         let sut = SwapKeyClientImpl(
             network: spy,
             url: url,
-            encoder: customEncoder, decoder: customDecoder
+            encoder: customEncoder,
+            decoder: customDecoder
         )
-        
+
         // Act
         _ = try await sut.send(request: .mock)
-        
+
         // Assert
         guard let sent = spy.receivedRequests.first else {
             return XCTFail("No request sent")
         }
         XCTAssertEqual(sent.httpBody, encodedBody)
+    }
+
+    // Transport level tests
+    func test_send_returnsTransportErrorOnURLSessionTimeout() async {
+        // Arrange
+        spy.result = .failure(URLError(.timedOut))
+
+        // Act
+        do {
+            _ = try await sut.send(request: .mock)
+            XCTFail("Expected transport error, got success")
+        } catch let error as NetworkError {
+            // Assert (pattern matching — Equatable talab qilmaydi)
+            switch error {
+            case .transport:
+                XCTAssertTrue(true)
+            default:
+                XCTFail("Expected .transport, got \(error)")
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func test_send_returnsTransportErrorOnNoInternet() async {
+        // Arrange
+        spy.result = .failure(URLError(.notConnectedToInternet))
+
+        // Act
+        do {
+            _ = try await sut.send(request: .mock)
+            XCTFail("Expected transport error, got success")
+        } catch let error as NetworkError {
+            switch error {
+            case .transport:
+                XCTAssertTrue(true)
+            default:
+                XCTFail("Expected .transport, got \(error)")
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 
 }
