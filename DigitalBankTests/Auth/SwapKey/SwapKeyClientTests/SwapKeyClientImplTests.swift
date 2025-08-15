@@ -142,5 +142,33 @@ final class SwapKeyClientImplTests: XCTestCase {
             "application/json"
         )
     }
+    
+    func test_send_usesInjectedEncoderDecoder() async throws {
+        // Arrange
+        let customEncoder = JSONEncoder()
+        let customDecoder = JSONDecoder()
+        
+        let expectedDTO = SwapKeyDTO.Request.mock
+        let encodedBody = try customEncoder.encode(expectedDTO)
+        
+        let okResponse = HTTTPTest.response(url: url, status: 200)
+        let okBody = try customEncoder.encode(SwapKeyDTO.Request.mock)
+        spy.result = .success((okBody, okResponse))
+        
+        let sut = SwapKeyClientImpl(
+            network: spy,
+            url: url,
+            encoder: customEncoder, decoder: customDecoder
+        )
+        
+        // Act
+        _ = try await sut.send(request: .mock)
+        
+        // Assert
+        guard let sent = spy.receivedRequests.first else {
+            return XCTFail("No request sent")
+        }
+        XCTAssertEqual(sent.httpBody, encodedBody)
+    }
 
 }
