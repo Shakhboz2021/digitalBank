@@ -10,10 +10,19 @@ import Foundation
 class SwapKeyClientImpl: SwapKeyClient {
     private let network: NetworkSession
     private let url: URL
+    private let encoder: JSONEncoder
+    private let decoder: JSONDecoder
 
-    init(network: NetworkSession, url: URL) {
+    init(
+        network: NetworkSession,
+        url: URL,
+        encoder: JSONEncoder = .init(),
+        decoder: JSONDecoder = .init()
+    ) {
         self.network = network
         self.url = url
+        self.encoder = encoder
+        self.decoder = decoder
     }
 
     func send(request: SwapKeyModels.Request) async throws
@@ -28,7 +37,7 @@ class SwapKeyClientImpl: SwapKeyClient {
 
         // DTO & Encodable (SRP/DRY)
         let requestDTO = SwapKeyDTO.Request(domain: request)
-        urlRequest.httpBody = try JSONEncoder().encode(requestDTO)
+        urlRequest.httpBody = try encoder.encode(requestDTO)
 
         let data: Data
         let response: URLResponse
@@ -47,7 +56,7 @@ class SwapKeyClientImpl: SwapKeyClient {
         }
 
         do {
-            let dto = try JSONDecoder().decode(
+            let dto = try decoder.decode(
                 SwapKeyDTO.Response.self,
                 from: data
             )
