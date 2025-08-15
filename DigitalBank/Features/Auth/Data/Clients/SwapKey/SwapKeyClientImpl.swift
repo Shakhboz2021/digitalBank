@@ -35,7 +35,6 @@ class SwapKeyClientImpl: SwapKeyClient {
             forHTTPHeaderField: "Content-Type"
         )
 
-        // DTO & Encodable (SRP/DRY)
         let requestDTO = SwapKeyDTO.Request(domain: request)
         urlRequest.httpBody = try encoder.encode(requestDTO)
 
@@ -44,7 +43,7 @@ class SwapKeyClientImpl: SwapKeyClient {
         do {
             (data, response) = try await network.data(for: urlRequest)
         } catch {
-            throw NetworkError.transport(underlying: error)
+            throw mapTransportError(error)
         }
 
         guard let http = response as? HTTPURLResponse else {
@@ -65,6 +64,13 @@ class SwapKeyClientImpl: SwapKeyClient {
             throw NetworkError.decodingFailed(underlying: error)
         }
 
+    }
+
+    // MARK: - Error mapping SRP/OCP
+    func mapTransportError(_ error: Error) -> NetworkError {
+        // Hozircha barcha URLSession xatolarini transport sifatida o'raymiz.
+        // Keyin kerak bo'lsa URLError.Code bo'yicha case-by-case map qilamiz (OCP).
+        NetworkError.transport(underlying: error)
     }
 
 }
