@@ -37,13 +37,13 @@ DigitalBank/
 |---------------|--------------------------|----------------------------------|
 | Entity model  | `EntityNameModel`       | `UserProfileModel`              |
 | Use case      | `*UseCase`              | `SwapKeyUseCase`                |
-| Interface     | `*Protocol` (optional)  | `SwapKeyServiceProtocol`        |
+| Interface     | `*Protocol` (faqat zarur bo‘lsa) | `SwapKeyServiceProtocol`        |
 | Impl class    | `*Impl`                 | `SwapKeyServiceImpl`            |
 | ViewModel     | `*ViewModel`            | `LoginViewModel`                |
 | Mapper        | `*Mapper`               | `SwapKeyMapper`                 |
 | Coordinator   | `*Coordinator`          | `AuthCoordinator`               |
 | NetworkClient | `*Client`               | `HTTPClient`, `AlamofireClient` |
-| Double (Spy)  | `*Spy` suffix           | `SwapKeyClientSpy`              |
+| Test Double   | `*Spy` / `*Stub` / `*Mock` | `SwapKeyClientSpy`              |
 
 ---
 
@@ -92,6 +92,7 @@ func test_execute_returnsInvalidData_whenEncryptedKeyIsMissing() {
 | test:      | Test added or updated              |
 | refactor:  | Code restructuring (no behavior change) |
 | chore:     | Docs, configs, etc.                |
+| ci:        | CI/CD related changes              |
 
 📌 Example:
 ```
@@ -105,7 +106,7 @@ test(SwapKey): add missing encryptedData test
 
 | Component     | Convention           | Example                        |
 |---------------|----------------------|---------------------------------|
-| Endpoint      | `+Endpoint.swift`    | `LoginEndpoint.swift`          |
+| Endpoint      | `*Endpoint.swift`    | `LoginEndpoint.swift`          |
 | API Client    | `*Client`            | `SwapKeyClient`, `AlamofireClient` |
 | Error Model   | `*Error`             | `NetworkError`, `SwapKeyError` |
 | Request Model | `Models.Request`     | `SwapKeyModels.Request`        |
@@ -123,11 +124,13 @@ test(SwapKey): add missing encryptedData test
 
 ## ♻️ Best Practices Summary
 
-✅ Always follow `PascalCase` for types (class, struct, enum, protocol)  
-✅ Use `camelCase` for variables and function names  
-✅ Avoid short, non-descriptive names  
-✅ Test fayllar test qilinayotgan UseCase nomiga mos bo‘lsin  
-✅ Git commitlar qisqa, aniq va prefiksli bo‘lsin
+✅ Har doim `PascalCase` typelar uchun (class, struct, enum, protocol)  
+✅ `camelCase` o‘zgaruvchilar va funksiyalar uchun  
+✅ Qisqa va ma’nosiz nomlardan qochish  
+✅ Test fayllari test qilinayotgan UseCase nomiga mos bo‘lishi  
+✅ Git commitlar qisqa, aniq va prefiksli bo‘lishi  
+✅ SRP, OCP, DIP kabi SOLID prinsiplariga amal qilish  
+✅ DRY, KISS, YAGNI va CQS tamoyillariga rioya qilish  
 
 ---
 
