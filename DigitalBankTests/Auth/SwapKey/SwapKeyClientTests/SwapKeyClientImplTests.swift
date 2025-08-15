@@ -44,12 +44,22 @@ final class SwapKeyClientImplTests: XCTestCase {
         spy.result = .failure(expectedError)
 
         // When & Then
-
         do {
             _ = try await sut.send(request: .mock)
             XCTFail("Expected to throw, go success")
+        } catch let error as NetworkError {
+            switch error {
+            case .transport(let underlying):
+                // ixtiyoriy: underlying URLError code ni ham tekshirish mumkin
+                XCTAssertEqual(
+                    (underlying as? URLError)?.code,
+                    expectedError.code
+                )
+            default:
+                XCTFail("Unexpected error \(error)")
+            }
         } catch {
-            XCTAssertEqual((error as? URLError)?.code, expectedError.code)
+            XCTFail("Unexpected error type \(error)")
         }
 
     }
@@ -64,10 +74,17 @@ final class SwapKeyClientImplTests: XCTestCase {
         // MARK: - Act & Assert
         do {
             _ = try await sut.send(request: .mock)
-            XCTFail("Expected error on 400, but get success")
-        } catch {
-            XCTAssertEqual((error as? URLError)?.code, .badServerResponse)
+            XCTFail("Expected to throw, go success")
+        } catch let error as NetworkError {
+            switch error {
+            case .non2xx(let status):
+                XCTAssertEqual(status, 400)
+            default:
+                XCTFail("Expected .non2xx, got \(error)")
+            }
             XCTAssertEqual(spy.receivedRequests.count, 1)
+        } catch {
+            XCTFail("Unexpected error \(error)")
         }
     }
 
@@ -81,10 +98,17 @@ final class SwapKeyClientImplTests: XCTestCase {
         // MARK: - Act & Assert
         do {
             _ = try await sut.send(request: .mock)
-            XCTFail("Expected error on 500, but get success")
-        } catch {
-            XCTAssertEqual((error as? URLError)?.code, .badServerResponse)
+            XCTFail("Expected to throw, go success")
+        } catch let error as NetworkError {
+            switch error {
+            case .non2xx(let status):
+                XCTAssertEqual(status, 500)
+            default:
+                XCTFail("Expected .non2xx, got \(error)")
+            }
             XCTAssertEqual(spy.receivedRequests.count, 1)
+        } catch {
+            XCTFail("Unexpected error \(error)")
         }
     }
 
