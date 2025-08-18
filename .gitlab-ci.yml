@@ -7,12 +7,14 @@ swiftlint:
   tags: [ios]
   script:
     - brew install swiftlint || true
-    - swiftlint lint --strict || true 
+    - swiftlint lint --strict || true
 
 unit_tests_simulator:
   stage: test
   tags: [ios]
   variables:
+    LC_ALL: "en_US.UTF-8"
+    LANG: "en_US.UTF-8"
     PROJECT: DigitalBank.xcodeproj
     SCHEME: DigitalBank
     DEST_SIM: platform=iOS Simulator,name=iPhone 16 Pro,OS=latest
