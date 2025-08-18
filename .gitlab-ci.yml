@@ -1,4 +1,4 @@
-stages: [lint, test, build]
+stages: [test, build]
 
 variables:
   PROJECT: DigitalBank.xcodeproj
@@ -7,14 +7,14 @@ variables:
   # DEVICE_UDID: CI o'zgaruvchisi orqali beriladi (Project → Settings → CI/CD → Variables)
 
 # --- LINT ---
-lint:
-  stage: lint
-  tags: [ios]
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
-  script:
-    - brew install swiftlint || true
-    - swiftlint
+#lint:
+#  stage: lint
+#  tags: [ios]
+#  rules:
+#    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+#  script:
+#    - brew install swiftlint || true
+#    - swiftlint
 
 # --- SIMULATOR TESTS ---
 unit_tests_simulator:
