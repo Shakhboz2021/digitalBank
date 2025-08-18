@@ -1,24 +1,37 @@
-stages: [test, build]
+stages:
+  - test
+  - build
 
 variables:
-  PROJECT: DigitalBank.xcodeproj
-  SCHEME: DigitalBank
+  PROJECT: "DigitalBank.xcodeproj"
+  SCHEME: "DigitalBank"
   DEST_SIM: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
+  DERIVED_DATA: build/DerivedData
 
-# --- SIMULATOR TESTS ---
 unit_tests_simulator:
   stage: test
-  tags: [ios]
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+  tags:
+    - ios
   script:
-    - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -destination "$DEST_SIM" -enableCodeCoverage YES test
+    - mkdir -p $DERIVED_DATA
+    - xcodebuild -project "$PROJECT" \
+                 -scheme "$SCHEME" \
+                 -derivedDataPath "$DERIVED_DATA" \
+                 -destination "$DEST_SIM" \
+                 -enableCodeCoverage YES \
+                 test
+  artifacts:
+    when: always
+    paths:
+      - build/DerivedData/Logs/Test/*.xcresult
 
-# --- REAL DEVICE BUILD ---
 build_real_device:
   stage: build
-  tags: [ios]
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+  tags:
+    - ios
   script:
-    - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -destination 'generic/platform=iOS' -configuration Debug build
+    - xcodebuild -project "$PROJECT" \
+                 -scheme "$SCHEME" \
+                 -destination 'generic/platform=iOS' \
+                 -archivePath build/App.xcarchive \
+                 archive
