@@ -1,0 +1,60 @@
+stages: [lint, test, build]
+
+variables:
+  PROJECT: DigitalBank.xcodeproj
+  SCHEME: DigitalBank
+  DEST_SIM: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
+  # DEVICE_UDID: CI o'zgaruvchisi orqali beriladi (Project → Settings → CI/CD → Variables)
+
+# --- LINT ---
+lint:
+  stage: lint
+  tags: [ios]
+  script:
+    - brew install swiftlint || true
+    - swiftlint
+
+# --- SIMULATOR TESTS (mavjud) ---
+unit_tests_simulator:
+  stage: test
+  tags: [ios]
+  script:
+    - gem install xcpretty --no-document
+    - xcodebuild -project "$PROJECT" \
+                 -scheme "$SCHEME" \
+                 -destination "$DEST_SIM" \
+                 -enableCodeCoverage YES \
+                 test | xcpretty -c
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/reports
+
+# --- REAL DEVICE BUILD (generic, testlarsiz) ---
+build_real_device:
+  stage: build
+  tags: [ios]
+  script:
+    - gem install xcpretty --no-document
+    - xcodebuild -project "$PROJECT" \
+                 -scheme "$SCHEME" \
+                 -destination 'generic/platform=iOS' \
+                 -configuration Debug \
+                 build | xcpretty -c
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+
+# --- REAL DEVICE TESTS (ixtiyoriy, UDID bo'lsa) ---
+unit_tests_real_device:
+  stage: test
+  tags: [ios]
+  rules:
+    - if: '$DEVICE_UDID'   # faqat UDID berilsa ishlaydi
+  script:
+    - gem install xcpretty --no-document
+    - xcodebuild -project "$PROJECT" \
+                 -scheme "$SCHEME" \
+                 -destination "platform=iOS,id=$DEVICE_UDID" \
+                 -enableCodeCoverage YES \
+                 test | xcpretty -c
