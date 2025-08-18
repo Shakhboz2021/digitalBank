@@ -15,4 +15,4 @@ unit_tests_simulator:
   artifacts:
     when: always
     paths:
-      - build/TestResults.xcresult
+      - build/
