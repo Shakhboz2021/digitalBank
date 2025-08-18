@@ -13,13 +13,10 @@ unit_tests_simulator:
   stage: test
   tags: [ios]
   variables:
-    LC_ALL: "en_US.UTF-8"
-    LANG: "en_US.UTF-8"
     PROJECT: DigitalBank.xcodeproj
     SCHEME: DigitalBank
     DEST_SIM: platform=iOS Simulator,name=iPhone 16 Pro,OS=latest
   script:
-    - which xcpretty || sudo gem install xcpretty --no-document
     - mkdir -p build
     - |
       xcodebuild \
