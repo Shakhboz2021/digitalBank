@@ -8,6 +8,6 @@
 import Foundation
 
 protocol GetUserIPInfoClient {
-    /// Tarmoqdan foydalanuvchi IP ma'lumotlarini oladi (transport/DTO darajasi)
+    // Tarmoqdan foydalanuvchi IP ma'lumotlarini oladi (transport/DTO darajasi)
     func fetchUserIPInfo() async throws -> UserIPInfoDTO
 }
