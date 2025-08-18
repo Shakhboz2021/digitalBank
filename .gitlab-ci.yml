@@ -23,7 +23,7 @@ unit_tests_simulator:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
   script:
-    - gem install xcpretty --no-document
+    - gem install xcpretty --no-document || true
     - xcodebuild -project "$PROJECT" \
                  -scheme "$SCHEME" \
                  -destination "$DEST_SIM" \
@@ -42,7 +42,7 @@ build_real_device:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
   script:
-    - gem install xcpretty --no-document
+    - gem install xcpretty --no-document || true
     - xcodebuild -project "$PROJECT" \
                  -scheme "$SCHEME" \
                  -destination 'generic/platform=iOS' \
@@ -56,7 +56,7 @@ unit_tests_real_device:
   rules:
     - if: '$DEVICE_UDID'   # faqat UDID bo'lsa
   script:
-    - gem install xcpretty --no-document
+    - gem install xcpretty --no-document || true
     - xcodebuild -project "$PROJECT" \
                  -scheme "$SCHEME" \
                  -destination "platform=iOS,id=$DEVICE_UDID" \
