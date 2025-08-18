@@ -12,7 +12,4 @@ unit_tests_simulator:
         -enableCodeCoverage YES \
         -resultBundlePath build/TestResults.xcresult \
         test | xcpretty -c
-  artifacts:
-    when: always
-    paths:
-      - build/
+
