@@ -4,7 +4,6 @@ variables:
   PROJECT: DigitalBank.xcodeproj
   SCHEME: DigitalBank
   DEST_SIM: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
-  # DEVICE_UDID: CI o'zgaruvchisi orqali beriladi (agar real device test ishlatilsa)
 
 # --- SIMULATOR TESTS ---
 unit_tests_simulator:
@@ -14,11 +13,6 @@ unit_tests_simulator:
     - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
   script:
     - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -destination "$DEST_SIM" -enableCodeCoverage YES test
-  artifacts:
-    when: always
-    expire_in: 7 days
-    paths:
-      - build/TestResults.xcresult
 
 # --- REAL DEVICE BUILD ---
 build_real_device:
