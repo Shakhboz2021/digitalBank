@@ -15,6 +15,7 @@ struct DigitalBankApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(container)
+            
         }
     }
 }
