@@ -1,19 +1,55 @@
 stages:
+  - lint
   - test
+  - build
 
 variables:
   PROJECT: DigitalBank.xcodeproj
   SCHEME: DigitalBank
   DEST_SIM: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
 
+# --- SwiftLint ---
+swiftlint:
+  stage: lint
+  tags: [ios]
+  allow_failure: true
+  script:
+    - which swiftlint || brew install swiftlint
+    - swiftlint lint --reporter xcode
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"'
+
+# --- Simulator Unit Tests (with xcpretty) ---
 unit_tests_simulator:
   stage: test
-  tags:
-    - ios
+  tags: [ios]
   script:
-    - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -destination "$DEST_SIM" -enableCodeCoverage YES test -resultBundlePath build/ResultBundle.xcresult
+    - which xcpretty || sudo gem install xcpretty --no-document
+    - mkdir -p build
+    - xcodebuild -project "$PROJECT" \
+                 -scheme "$SCHEME" \
+                 -destination "$DEST_SIM" \
+                 -enableCodeCoverage YES \
+                 -resultBundlePath build/TestResults.xcresult \
+                 test | xcpretty -c
   artifacts:
     when: always
     paths:
       - build/
-    expire_in: 1 week
+    expire_in: 7 days
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"'
+
+# --- Real Device Build (Release mode) ---
+build_real_device:
+  stage: build
+  tags: [ios]
+  script:
+    - which xcpretty || sudo gem install xcpretty --no-document
+    - xcodebuild -project "$PROJECT" \
+                 -scheme "$SCHEME" \
+                 -destination "generic/platform=iOS" \
+                 -configuration Release \
+                 clean build | xcpretty -c
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"'
