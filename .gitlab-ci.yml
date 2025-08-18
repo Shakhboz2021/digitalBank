@@ -1,37 +1,19 @@
 stages:
   - test
-  - build
 
 variables:
-  PROJECT: "DigitalBank.xcodeproj"
-  SCHEME: "DigitalBank"
+  PROJECT: DigitalBank.xcodeproj
+  SCHEME: DigitalBank
   DEST_SIM: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
-  DERIVED_DATA: build/DerivedData
 
 unit_tests_simulator:
   stage: test
   tags:
     - ios
   script:
-    - mkdir -p $DERIVED_DATA
-    - xcodebuild -project "$PROJECT" \
-                 -scheme "$SCHEME" \
-                 -derivedDataPath "$DERIVED_DATA" \
-                 -destination "$DEST_SIM" \
-                 -enableCodeCoverage YES \
-                 test
+    - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -destination "$DEST_SIM" -enableCodeCoverage YES test -resultBundlePath build/ResultBundle.xcresult
   artifacts:
     when: always
     paths:
-      - build/DerivedData/Logs/Test/*.xcresult
-
-build_real_device:
-  stage: build
-  tags:
-    - ios
-  script:
-    - xcodebuild -project "$PROJECT" \
-                 -scheme "$SCHEME" \
-                 -destination 'generic/platform=iOS' \
-                 -archivePath build/App.xcarchive \
-                 archive
+      - build/ResultBundle.xcresult
+    expire_in: 1 week
