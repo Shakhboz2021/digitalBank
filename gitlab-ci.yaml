@@ -1,0 +1,25 @@
+# .gitlab-ci.yml — DigitalBank iOS (minimal)
+stages: [lint, test]
+
+variables:
+  PROJECT: DigitalBank.xcodeproj      # agar workspace bo'lsa: DigitalBank.xcworkspace
+  SCHEME: DigitalBank                 # sizning scheme nomingiz
+  DEST: "platform=iOS Simulator,name=iPhone 15,OS=latest"
+
+lint:
+  stage: lint
+  tags: [ios]                       # runner register qilganda bergan tag
+  script:
+    - brew install swiftlint || true  # SwiftLint bo'lmasa o'rnatadi
+    - swiftlint
+
+unit_tests:
+  stage: test
+  tags: [ios]
+  script:
+    - xcodebuild -project "$PROJECT" -scheme "$SCHEME" -destination "$DEST" -enableCodeCoverage YES test | xcpretty -c
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/reports
