@@ -1,3 +1,14 @@
+stages:
+  - lint
+  - test
+
+swiftlint:
+  stage: lint
+  tags: [ios]
+  script:
+    - brew install swiftlint || true
+    - swiftlint
+
 unit_tests_simulator:
   stage: test
   tags: [ios]
@@ -6,8 +17,6 @@ unit_tests_simulator:
     SCHEME: DigitalBank
     DEST_SIM: platform=iOS Simulator,name=iPhone 16 Pro,OS=latest
   script:
-    - brew install swiftlint || true
-    - swiftlint
     - which xcpretty || sudo gem install xcpretty --no-document
     - mkdir -p build
     - |
