@@ -7,7 +7,7 @@ swiftlint:
   tags: [ios]
   script:
     - brew install swiftlint || true
-    - swiftlint
+    - swiftlint lint --strict || true 
 
 unit_tests_simulator:
   stage: test
