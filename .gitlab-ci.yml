@@ -18,7 +18,7 @@ unit_tests_simulator:
     when: always
     expire_in: 7 days
     paths:
-      - build/reports
+      - build/TestResults.xcresult
 
 # --- REAL DEVICE BUILD ---
 build_real_device:
