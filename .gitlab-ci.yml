@@ -1,7 +1,13 @@
 unit_tests_simulator:
   stage: test
   tags: [ios]
+  variables:
+    PROJECT: DigitalBank.xcodeproj
+    SCHEME: DigitalBank
+    DEST_SIM: platform=iOS Simulator,name=iPhone 16 Pro,OS=latest
   script:
+    - brew install swiftlint || true
+    - swiftlint
     - which xcpretty || sudo gem install xcpretty --no-document
     - mkdir -p build
     - |
@@ -10,6 +16,4 @@ unit_tests_simulator:
         -scheme "$SCHEME" \
         -destination "$DEST_SIM" \
         -enableCodeCoverage YES \
-        -resultBundlePath build/TestResults.xcresult \
         test | xcpretty -c
-
