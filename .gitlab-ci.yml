@@ -10,14 +10,18 @@ variables:
 lint:
   stage: lint
   tags: [ios]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
   script:
     - brew install swiftlint || true
     - swiftlint
 
-# --- SIMULATOR TESTS (mavjud) ---
+# --- SIMULATOR TESTS ---
 unit_tests_simulator:
   stage: test
   tags: [ios]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
   script:
     - gem install xcpretty --no-document
     - xcodebuild -project "$PROJECT" \
@@ -35,6 +39,8 @@ unit_tests_simulator:
 build_real_device:
   stage: build
   tags: [ios]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
   script:
     - gem install xcpretty --no-document
     - xcodebuild -project "$PROJECT" \
@@ -42,15 +48,13 @@ build_real_device:
                  -destination 'generic/platform=iOS' \
                  -configuration Debug \
                  build | xcpretty -c
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
 
 # --- REAL DEVICE TESTS (ixtiyoriy, UDID bo'lsa) ---
 unit_tests_real_device:
   stage: test
   tags: [ios]
   rules:
-    - if: '$DEVICE_UDID'   # faqat UDID berilsa ishlaydi
+    - if: '$DEVICE_UDID'   # faqat UDID bo'lsa
   script:
     - gem install xcpretty --no-document
     - xcodebuild -project "$PROJECT" \
