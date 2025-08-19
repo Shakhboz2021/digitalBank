@@ -193,7 +193,12 @@ final class SwapKeyClientImplTests: XCTestCase {
         guard let sent = spy.receivedRequests.first else {
             return XCTFail("No request sent")
         }
-        XCTAssertEqual(sent.httpBody, encodedBody)
+        let sentJson = try JSONSerialization.jsonObject(
+            with: sent.httpBody!
+        ) as! NSDictionary
+        let expectedJson = try JSONSerialization.jsonObject(with: encodedBody) as!NSDictionary
+        
+        XCTAssertEqual(sentJson, expectedJson)
     }
 
     // Transport level tests
