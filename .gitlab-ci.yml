@@ -6,6 +6,8 @@ swiftlint:
   stage: lint
   tags: [ios]
   script:
+    - export http_proxy="http://inet.fido.uz:3128"
+    - export https_proxy="http://inet.fido.uz:3128"
     - brew install swiftlint || true
     - swiftlint lint --strict || true
 
@@ -17,6 +19,7 @@ unit_tests_simulator:
     SCHEME: DigitalBank
     DEST_SIM: platform=iOS Simulator,name=iPhone 16 Pro,OS=latest
   script:
+
     - mkdir -p build
     - |
       xcodebuild \
