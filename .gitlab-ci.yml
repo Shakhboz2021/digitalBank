@@ -22,6 +22,7 @@ unit_tests_simulator:
   script:
     - export http_proxy="http://inet.fido.uz:3128"
     - export https_proxy="http://inet.fido.uz:3128"
+    - export DEST_SIM="id=B43A5ED0-43B7-45E3-BF6C-88DC55443160"
     - mkdir -p build
     - |
       xcodebuild \
