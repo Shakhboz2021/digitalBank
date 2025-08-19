@@ -157,7 +157,15 @@ final class SwapKeyClientImplTests: XCTestCase {
         let expectedBody = try JSONEncoder().encode(expectedDTO)
 
         // JSON byte-for-byte tengligini tekshiramiz
-        XCTAssertEqual(body, expectedBody)
+        let sentJson = try JSONSerialization.jsonObject(
+            with: body,
+            options: []
+        ) as! NSDictionary
+        let expectedJson = try JSONSerialization.jsonObject(
+            with: expectedBody,
+            options: []
+        ) as! NSDictionary
+        XCTAssertEqual(sentJson, expectedJson)
 
         // (ixtiyoriy) Header va method ham to‘g‘ri
         XCTAssertEqual(sent.httpMethod, "POST")
