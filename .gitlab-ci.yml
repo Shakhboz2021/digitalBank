@@ -8,7 +8,7 @@ swiftlint:
   script:
     - export http_proxy="http://inet.fido.uz:3128"
     - export https_proxy="http://inet.fido.uz:3128"
-    - brew install swiftlint || true
+    - brew install swiftlint
     - swiftlint lint --strict || true
 
 unit_tests_simulator:
