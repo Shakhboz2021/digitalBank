@@ -30,4 +30,4 @@ unit_tests_simulator:
         -scheme "$SCHEME" \
         -destination "$DEST_SIM" \
         -enableCodeCoverage YES \
-        test | xcpretty -c
+        test
