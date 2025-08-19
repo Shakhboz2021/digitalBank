@@ -35,7 +35,6 @@ unit_tests_simulator:
   stage: test
   tags: [ios]
   script:
-    - which xcpretty || sudo gem install xcpretty --no-document
     - mkdir -p build
     - export DEST_SIM="id=B43A5ED0-43B7-45E3-BF6C-88DC55443160"
     - |
