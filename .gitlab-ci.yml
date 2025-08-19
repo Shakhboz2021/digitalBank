@@ -44,7 +44,6 @@ unit_tests_simulator:
         -scheme "$SCHEME" \
         -destination "$DEST_SIM" \
         -enableCodeCoverage YES \
-        -resultBundlePath build/TestResults.xcresult \
         test
   artifacts:
     when: always
