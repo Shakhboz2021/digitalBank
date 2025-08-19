@@ -44,8 +44,3 @@ unit_tests_simulator:
         -destination "$DEST_SIM" \
         -enableCodeCoverage YES \
         test
-  artifacts:
-    when: always
-    paths:
-      - build/
-    expire_in: 7 days
