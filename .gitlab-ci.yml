@@ -12,31 +12,18 @@ swiftlint:
     # - unset http_proxy https_proxy
     - swiftlint lint --strict || true
 
-#unit_tests_simulator:
-#  stage: test
-#  tags: [ios]
-#  variables:
-#    PROJECT: DigitalBank.xcodeproj
-#    SCHEME: DigitalBank
-#    DEST_SIM: platform=iOS Simulator,name=iPhone 16 Pro,OS=latest
-#  script:
-#    - export http_proxy="http://inet.fido.uz:3128"
-#    - export https_proxy="http://inet.fido.uz:3128"
-#    - export DEST_SIM="id=B43A5ED0-43B7-45E3-BF6C-88DC55443160"
-#    - mkdir -p build
-#    - |
-#      xcodebuild \
-#        -project "$PROJECT" \
-#        -scheme "$SCHEME" \
-#        -destination "$DEST_SIM" \
-#        -enableCodeCoverage YES \
-#        test
 unit_tests_simulator:
   stage: test
   tags: [ios]
+  variables:
+    PROJECT: DigitalBank.xcodeproj
+    SCHEME: DigitalBank
+    DEST_SIM: platform=iOS Simulator,name=iPhone 16 Pro,OS=latest
   script:
-    - mkdir -p build
+    - export http_proxy="http://inet.fido.uz:3128"
+    - export https_proxy="http://inet.fido.uz:3128"
     - export DEST_SIM="id=B43A5ED0-43B7-45E3-BF6C-88DC55443160"
+    - mkdir -p build
     - |
       xcodebuild \
         -project "$PROJECT" \
