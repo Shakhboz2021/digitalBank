@@ -20,7 +20,7 @@ class AuthAssembly: AuthAssembling {
     func makeSwapKeyUseCase() -> SwapKeyUseCase {  // Dependency Inversion
         let client = SwapKeyClientImpl(
             network: network,
-            url: SwapKeyEndpoint.swapKey
+            endpoint: AuthEndpoint.swapKey
         )
         let repository = SwapKeyRepositoryImpl(client: client)
         return SwapKeyUseCaseImpl(repository: repository)
@@ -28,7 +28,7 @@ class AuthAssembly: AuthAssembling {
     func makeGetUserIPInfoUseCase() -> any GetUserIPInfoUseCase {
         let client = GetUserIPInfoClientImpl(
             network: network,
-            url: GetUserIPInfoEndpoint.url
+            endpoint: AuthEndpoint.getUserIPInfo
         )
         let repository = GetUserIPInfoRepositoryImpl(client: client)
         return GetUserIPInfoUseCaseImpl(repository: repository)

@@ -8,17 +8,17 @@ import Foundation
 
 class GetUserIPInfoClientImpl: GetUserIPInfoClient {
     private let network: NetworkSession
-    private let url: URL
+    private let endpoint: Endpoint
 
-    init(network: NetworkSession, url: URL) {
+    init(network: NetworkSession, endpoint: Endpoint) {
         self.network = network
-        self.url = url
+        self.endpoint = endpoint
     }
     /// QUERY (CQS tamoyiliga ko‘ra: holatni o‘zgartirmaydi, faqat ma'lumot qaytaradi)
     func fetchUserIPInfo() async throws -> UserIPInfoDTO {
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        var request = URLRequest(url: endpoint.url)
+        request.httpMethod = endpoint.method.rawValue
+        request.allHTTPHeaderFields = endpoint.headers
 
         let (data, response) = try await network.data(for: request)
         guard let http = response as? HTTPURLResponse,
