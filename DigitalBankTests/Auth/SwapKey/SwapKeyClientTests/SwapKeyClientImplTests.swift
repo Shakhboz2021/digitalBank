@@ -13,19 +13,17 @@ final class SwapKeyClientImplTests: XCTestCase {
 
     // MARK: - Test fixtures (per-test reinit)
     private var spy: NetworkSessionSpy!
-    private var url: URL!
+    private var endpoint: Endpoint = AuthEndpoint.swapKey
     private var sut: SwapKeyClientImpl!
 
     override func setUp() {
         super.setUp()
         spy = NetworkSessionSpy()
-        url = URL(string: "https://any-url.com/swap-key")!
-        sut = SwapKeyClientImpl(network: spy, url: url)
+        sut = SwapKeyClientImpl(network: spy, endpoint: endpoint)
     }
 
     override func tearDown() {
         spy = nil
-        url = nil
         sut = nil
         super.tearDown()
     }
@@ -33,7 +31,7 @@ final class SwapKeyClientImplTests: XCTestCase {
     func test_init_doesNotRequestAnyData() {
         _ = SwapKeyClientImpl(
             network: spy,
-            url: url
+            endpoint: endpoint
         )
         XCTAssertEqual(spy.receivedRequests.count, 0)
     }
@@ -68,7 +66,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         // AAA
         // MARK: - Arrange
         let body = Data(#"{"code":400,"msg":"Bad Request"}"#.utf8)
-        let http = HTTTPTest.response(url: url, status: 400)
+        let http = HTTTPTest.response(endpoint: endpoint, status: 400)
         spy.result = .success((body, http))
 
         // MARK: - Act & Assert
@@ -92,7 +90,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         // AAA
         // MARK: - Arrange
         let body = Data(#"{"code":500,"msg":"Bad Request"}"#.utf8)
-        let http = HTTTPTest.response(url: url, status: 500)
+        let http = HTTTPTest.response(endpoint: endpoint, status: 500)
         spy.result = .success((body, http))
 
         // MARK: - Act & Assert
@@ -116,17 +114,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         // (Arrange)Given
         let expectedDTO = SwapKeyDTO.Response.mock
         let data = try JSONEncoder().encode(expectedDTO)
-        guard
-            let http = HTTPURLResponse(
-                url: url,
-                statusCode: 200,
-                httpVersion: nil,
-                headerFields: ["Content-Type": "application/json"]
-            )
-        else {
-            XCTFail("Failed to create HTTPURLResponse")
-            return
-        }
+        let http = HTTTPTest.response(endpoint: endpoint, status: 200)
         spy.result = .success((data, http))
 
         // (Act)When
@@ -142,7 +130,10 @@ final class SwapKeyClientImplTests: XCTestCase {
         let expectedDTO = SwapKeyDTO.Request.mock
         // Network javobi kerak emas; faqat body tekshiramiz
         let okBody = try JSONEncoder().encode(SwapKeyDTO.Response.mock)  // Data
-        let ok = HTTTPTest.response(url: url, status: 200)  // HTTPURLResponse
+        let ok = HTTTPTest.response(
+            endpoint: endpoint,
+            status: 200
+        )  // HTTPURLResponse
         spy.result = .success((okBody, ok))
 
         // Act
@@ -183,13 +174,13 @@ final class SwapKeyClientImplTests: XCTestCase {
         let expectedDTO = SwapKeyDTO.Request.mock
         let encodedBody = try customEncoder.encode(expectedDTO)
 
-        let okResponse = HTTTPTest.response(url: url, status: 200)
+        let okResponse = HTTTPTest.response(endpoint: endpoint, status: 200)
         let okBody = try customEncoder.encode(SwapKeyDTO.Response.mock)
         spy.result = .success((okBody, okResponse))
 
         let sut = SwapKeyClientImpl(
             network: spy,
-            url: url,
+            endpoint: endpoint,
             encoder: customEncoder,
             decoder: customDecoder
         )

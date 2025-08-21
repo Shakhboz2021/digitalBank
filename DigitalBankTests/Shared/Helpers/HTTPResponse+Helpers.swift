@@ -7,18 +7,19 @@
 
 import Foundation
 
+@testable import DigitalBank
+
 enum HTTTPTest {
     static func response(
-        url: URL,
-        status: Int,
-        headers: [String: String] = ["Content-Type": "application/json"]
+        endpoint: Endpoint,
+        status: Int
     ) -> HTTPURLResponse {
         guard
             let http = HTTPURLResponse(
-                url: url,
+                url: endpoint.url,
                 statusCode: status,
                 httpVersion: nil,
-                headerFields: headers
+                headerFields: endpoint.headers
             )
         else {
             fatalError("Invalid HTTPURLResponse for status \(status)")
