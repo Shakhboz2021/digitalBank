@@ -28,12 +28,10 @@ class SwapKeyClientImpl: SwapKeyClient {
     func send(request: SwapKeyModels.Request) async throws
         -> SwapKeyModels.Response
     {
-        var urlRequest = URLRequest(url: endpoint.url)
-        urlRequest.httpMethod = endpoint.method.rawValue
-        urlRequest.allHTTPHeaderFields = endpoint.headers
-
-        let requestDTO = SwapKeyDTO.Request(domain: request)
-        urlRequest.httpBody = try encoder.encode(requestDTO)
+        let urlRequest = try endpoint.makeRequest(
+            body: SwapKeyDTO.Request(domain: request),
+            encoder: encoder
+        )
 
         let data: Data
         let response: URLResponse
