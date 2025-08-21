@@ -1,0 +1,35 @@
+//
+//  AuthEndpoint.swift
+//  DigitalBank
+//
+//  Created by Muhammad on 21/08/25.
+//
+
+import Foundation
+
+enum AuthEndpoint: Endpoint {
+    case swapKey
+    case swapKeyPin
+    case getUserIPInfo
+
+    var url: URL {
+        switch self {
+        case .swapKey:
+            AppConfig.baseURL.appendingPathComponent("v1/swapKey")
+        case .swapKeyPin:
+            AppConfig.baseURL.appendingPathComponent("v1/swapKeyPin")
+        case .getUserIPInfo:
+            ExternalConfig.getUserIPInfoURL
+        }
+    }
+
+    var method: HTTPMethod {
+        switch self {
+        case .swapKey, .swapKeyPin:
+            return .post
+        case .getUserIPInfo:
+            return .get
+        }
+    }
+
+}
