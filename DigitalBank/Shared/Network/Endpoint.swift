@@ -26,7 +26,10 @@ extension Endpoint {
     }
     var query: [URLQueryItem] { [] }
 
-    func makeRequest(body: Encodable?, encoder: JSONEncoder) throws
+    func makeRequest(
+        body: Encodable?,
+        encoder: JSONEncoder = JSONCoder.makeEncoder()
+    ) throws
         -> URLRequest
     {
         var components = URLComponents(

@@ -16,8 +16,8 @@ class SwapKeyClientImpl: SwapKeyClient {
     init(
         network: NetworkSession,
         endpoint: Endpoint,
-        encoder: JSONEncoder = .init(),
-        decoder: JSONDecoder = .init()
+        encoder: JSONEncoder = JSONCoder.makeEncoder(),
+        decoder: JSONDecoder = JSONCoder.makeDecoder()
     ) {
         self.network = network
         self.endpoint = endpoint
