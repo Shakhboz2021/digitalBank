@@ -16,9 +16,7 @@ class GetUserIPInfoClientImpl: GetUserIPInfoClient {
     }
     /// QUERY (CQS tamoyiliga ko‘ra: holatni o‘zgartirmaydi, faqat ma'lumot qaytaradi)
     func fetchUserIPInfo() async throws -> UserIPInfoDTO {
-        var request = URLRequest(url: endpoint.url)
-        request.httpMethod = endpoint.method.rawValue
-        request.allHTTPHeaderFields = endpoint.headers
+        let request = try endpoint.makeRequest()
 
         let (data, response) = try await network.data(for: request)
         guard let http = response as? HTTPURLResponse,
