@@ -36,9 +36,7 @@ extension Endpoint {
             url: url,
             resolvingAgainstBaseURL: false
         )!
-        if !query.isEmpty {
-            components.queryItems = query
-        }
+        components.queryItems = query.isEmpty ? nil : query
         var req = URLRequest(url: components.url!)
         req.httpMethod = method.rawValue
         headers.forEach { req.setValue($1, forHTTPHeaderField: $0) }
