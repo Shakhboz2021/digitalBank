@@ -44,17 +44,6 @@ extension Endpoint {
         headers.forEach { req.setValue($1, forHTTPHeaderField: $0) }
         if let body {
             req.httpBody = try encoder.encode(AnyEncodable(body))
-            // Content-Type faqat body bo'lsa
-            if req.value(forHTTPHeaderField: "Content-Type") == nil {
-                req.setValue(
-                    "application/json",
-                    forHTTPHeaderField: "Content-Type"
-                )
-            }
-        }
-
-        if req.value(forHTTPHeaderField: "Accept") == nil {
-            req.setValue("application/json", forHTTPHeaderField: "Accept")
         }
         return req
     }
