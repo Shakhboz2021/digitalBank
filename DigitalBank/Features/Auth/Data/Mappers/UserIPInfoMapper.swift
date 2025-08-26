@@ -7,6 +7,29 @@
 
 import Foundation
 
+extension UserIPInfo {
+    // Domain -> DTO
+    func toDTO() -> UserIPInfoDTO {
+        .init(
+            status: status,
+            country: country,
+            countryCode: countryCode,
+            region: region,
+            regionName: regionName,
+            city: city,
+            zip: zip,
+            lat: lat,
+            lon: lon,
+            timezone: timezone,
+            isp: isp,
+            org: org,
+            as: asNumber,  // DTO property nomi: `as`
+            query: query,
+            ip: ip
+        )
+    }
+}
+
 extension UserIPInfoDTO {
     func toDomain() -> UserIPInfo {
         UserIPInfo(
