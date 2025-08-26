@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserIPInfoDTO: Decodable {
+struct UserIPInfoDTO: Codable, Equatable {
     let status: String?
     let country: String?
     let countryCode: String?
