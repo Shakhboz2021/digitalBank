@@ -13,4 +13,5 @@ enum NetworkError: Error {
     case decodingFailed(underlying: Error?)
     case transport(underlying: Error)
     case invalidResponse
+    case invalidRequestURL 
 }
