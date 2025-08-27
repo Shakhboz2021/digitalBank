@@ -11,7 +11,7 @@ enum DeviceInfo {
     static func current() -> AppDevice {
         .init(
             deviceType: "I",
-            deviceCode: "",  // Take it from Keychain
+            deviceCode: Keychain.get(key: .deviceID),  
             deviceName: UIDevice.current.name
         )
     }

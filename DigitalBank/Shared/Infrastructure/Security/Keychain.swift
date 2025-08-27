@@ -92,10 +92,3 @@ enum Keychain {
 
     static func hasPin() -> Bool { !get(key: .pin).isEmpty }
 }
-
-// MARK: - DeviceID helper (doimiy identifikator)
-enum DeviceCodeProvider {
-    static func deviceCode() -> String? {
-        Keychain.get(key: .deviceID)
-    }
-}
