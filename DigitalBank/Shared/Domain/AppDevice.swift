@@ -9,18 +9,15 @@ import Foundation
 
 struct AppDevice {
     let deviceType: String
-    let deviceCode: String
+    let deviceCode: String  // UUID in Keychain
     let deviceName: String
-    let deviceId: String  // UUID in Keychain
     init(
         deviceType: String,
         deviceCode: String,
-        deviceName: String,
-        deviceId: String
+        deviceName: String
     ) {
         self.deviceType = deviceType
         self.deviceCode = deviceCode
         self.deviceName = deviceName
-        self.deviceId = deviceId
     }
 }
