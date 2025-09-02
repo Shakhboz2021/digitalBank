@@ -17,12 +17,12 @@ class SignInUseCaseTests: XCTestCase {
         XCTAssertEqual(repo.checkCallCount, 0)
         XCTAssertTrue(repo.receivedRequests.isEmpty)
     }
-    
+    // MARK: - Sad-case tests
     func test_execute_propogatesRepositoryError() async {
         // Arrange
         let (sut, repo) = makeSUT()
         let request = makeSignInRequest()
-        
+
         // Assign & Assert
         do {
             _ = try await sut.execute(request: request)
@@ -33,5 +33,29 @@ class SignInUseCaseTests: XCTestCase {
             XCTAssertEqual(repo.checkCallCount, 1)
             XCTAssertEqual(repo.receivedRequests.count, 1)
         }
+    }
+
+    func test_execute_propogatesNetworkErrorOn401() async {
+        // Arrange
+        let (sut, repo) = makeSUT()
+        let request = makeSignInRequest()
+        let expected = NetworkError.non2xx(status: 401)
+
+        repo.result = .failure(expected)
+
+        // Act & Assert
+        do {
+            _ = try await sut.execute(request: request)
+            XCTFail("Expected to throw \(expected), but got success")
+        } catch let error as NetworkError {
+            guard case let .non2xx(status) = error else {
+                return XCTFail("Expected to throw .non2xx, but got \(error)")
+            }
+            XCTAssertEqual(status, 401)
+        } catch {
+            XCTFail("Unnexpected error: \(error)")
+        }
+        XCTAssertEqual(repo.checkCallCount, 1)
+        XCTAssertEqual(repo.receivedRequests.count, 1)
     }
 }
