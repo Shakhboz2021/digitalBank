@@ -27,9 +27,5 @@ enum SwapKeyDTO {
         let code: Int?
         let msg: String?
         let ecnryptData: String?
-
-        func toDomain() -> SwapKeyModels.Response {
-            .init(code: code, msg: msg, ecnryptData: ecnryptData)
-        }
     }
 }

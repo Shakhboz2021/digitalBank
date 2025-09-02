@@ -15,7 +15,9 @@ class SwapKeyRepositoryImpl: SwapKeyRepository {
     }
 
     func swapKey(request: SwapKeyModels.Request) async throws -> SwapKeyModels.Response {
-        try await client.send(request: request)
+        let dtoRequest = request.toDTO()
+        let dtoResponse = try await client.send(request: dtoRequest)
+        return dtoResponse.toDomain()
     }
 
 }
