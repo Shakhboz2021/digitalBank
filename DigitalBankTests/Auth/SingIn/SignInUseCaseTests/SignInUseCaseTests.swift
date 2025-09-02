@@ -17,4 +17,21 @@ class SignInUseCaseTests: XCTestCase {
         XCTAssertEqual(repo.checkCallCount, 0)
         XCTAssertTrue(repo.receivedRequests.isEmpty)
     }
+    
+    func test_execute_propogatesRepositoryError() async {
+        // Arrange
+        let (sut, repo) = makeSUT()
+        let request = makeSignInRequest()
+        
+        // Assign & Assert
+        do {
+            _ = try await sut.execute(request: request)
+            XCTFail("Expected to throw because spy.result is nil")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, "SignInRepositorySpy.result not set")
+            XCTAssertEqual(repo.checkCallCount, 1)
+            XCTAssertEqual(repo.receivedRequests.count, 1)
+        }
+    }
 }
