@@ -121,7 +121,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         let received = try await sut.send(request: .mock)
 
         // (Assert)Then
-        XCTAssertEqual(received, expectedDTO.toDomain())
+        XCTAssertEqual(received, expectedDTO)
         XCTAssertEqual(spy.receivedRequests.count, 1)
     }
 

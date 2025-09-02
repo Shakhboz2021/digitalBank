@@ -24,6 +24,6 @@ extension SwapKeyModels.Request {
 
 extension SwapKeyModels.Response {
     static var mock: Self {
-        .init(code: 0, msg: "Success", ecnryptData: "123")
+        .init(code: 0, msg: "Success", encryptData: "123")
     }
 }

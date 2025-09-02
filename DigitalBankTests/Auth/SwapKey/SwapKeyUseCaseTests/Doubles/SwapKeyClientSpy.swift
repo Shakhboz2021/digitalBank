@@ -10,11 +10,11 @@ import Foundation
 @testable import DigitalBank
 
 final class SwapKeyClientSpy: SwapKeyClient {
-    private(set) var receivedRequests: [SwapKeyModels.Request] = []
-    var resultToReturn: Result<SwapKeyModels.Response, Error>?
+    private(set) var receivedRequests: [SwapKeyDTO.Request] = []
+    var resultToReturn: Result<SwapKeyDTO.Response, Error>?
 
-    func send(request: SwapKeyModels.Request) async throws
-        -> SwapKeyModels.Response
+    func send(request: SwapKeyDTO.Request) async throws
+    -> SwapKeyDTO.Response
     {
         receivedRequests.append(request)
         switch resultToReturn {

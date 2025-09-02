@@ -23,7 +23,7 @@ enum SwapKeyDTO {
             self.phone_number = domain.phoneNumber
         }
     }
-    struct Response: Codable {
+    struct Response: Codable, Equatable {
         let code: Int?
         let msg: String?
         let ecnryptData: String?
