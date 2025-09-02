@@ -53,9 +53,33 @@ class SignInUseCaseTests: XCTestCase {
             }
             XCTAssertEqual(status, 401)
         } catch {
-            XCTFail("Unnexpected error: \(error)")
+            XCTFail("Unexpected error: \(error)")
         }
         XCTAssertEqual(repo.checkCallCount, 1)
         XCTAssertEqual(repo.receivedRequests.count, 1)
+    }
+    
+    func test_execute_propogatesDecodingFailedError() async {
+        // Arrange
+        let (sut, repo) = makeSUT()
+        let request = makeSignInRequest()
+        let underlyingError = NSError(domain: "decode", code: 0)
+        let expected = NetworkError.decodingFailed(underlying: underlyingError)
+        
+        repo.result = .failure(expected)
+        
+        // Act & Assert
+        do {
+            _ = try await sut.execute(request: request)
+            XCTFail("Unexpected to throw, but got success")
+        } catch let error as NetworkError {
+            guard case let .decodingFailed(underlying) = error else {
+                return XCTFail("Expected to throw .decoding, but got \(error)")
+            }
+            XCTAssertEqual((underlying as? NSError)?.domain, "decode")
+        } catch {
+            XCTAssertEqual(repo.checkCallCount, 1)
+            XCTAssertEqual(repo.receivedRequests.count, 1)
+        }
     }
 }
