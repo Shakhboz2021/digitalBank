@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SwapKeyClient {
-    func send(request: SwapKeyModels.Request) async throws -> SwapKeyModels.Response
+    func send(request: SwapKeyDTO.Request) async throws -> SwapKeyDTO.Response
 }
