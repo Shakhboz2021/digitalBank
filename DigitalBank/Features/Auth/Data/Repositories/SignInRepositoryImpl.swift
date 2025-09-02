@@ -6,13 +6,16 @@
 //
 
 import Foundation
+
 class SignInRepositoryImpl: SignInRepository {
     private let client: SignInClient
-    
-    init(client: SignInClient) {
-        self.client = client
-    }
-    func check(request: SignInModels.Request) async throws -> SignInModels.Response {
-        try await client.check(request: request)
+
+    init(client: SignInClient) { self.client = client }
+    func check(request: SignInModels.Request) async throws
+        -> SignInModels.Response
+    {
+        let dtoRequest = request.toDTO()
+        let dtoResponse = try await client.check(request: dtoRequest)
+        return dtoResponse.toDomain()
     }
 }
