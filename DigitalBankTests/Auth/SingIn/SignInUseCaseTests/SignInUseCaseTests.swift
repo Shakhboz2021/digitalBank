@@ -82,4 +82,23 @@ class SignInUseCaseTests: XCTestCase {
             XCTAssertEqual(repo.receivedRequests.count, 1)
         }
     }
+    
+    // MARK: - Happy-case tests
+    func test_execute_deliversResponseOnSuccess() async throws {
+        // Arrange
+        let (sut, repo) = makeSUT()
+        let request = makeSignInRequest()
+        
+        let expected = makeSignInResponse()
+        repo.result = .success(expected)
+        
+        // Act
+        let result = try await sut.execute(request: request)
+        
+        // Assert
+        XCTAssertEqual(result, expected)
+        XCTAssertEqual(repo.checkCallCount, 1)
+        XCTAssertEqual(repo.receivedRequests.count, 1)
+        
+    }
 }
