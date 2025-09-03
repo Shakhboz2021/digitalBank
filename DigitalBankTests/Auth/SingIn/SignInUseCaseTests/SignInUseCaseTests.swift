@@ -11,6 +11,8 @@ import XCTest
 @testable import DigitalBank
 
 class SignInUseCaseTests: XCTestCase {
+    
+    // MARK: - Baby stage
     func test_init_doesNotCallRepository() {
         let repo = SignInRepositorySpy()
         _ = SignInUseCaseImpl(repository: repo)
@@ -18,7 +20,7 @@ class SignInUseCaseTests: XCTestCase {
         XCTAssertTrue(repo.receivedRequests.isEmpty)
     }
     // MARK: - Sad-case tests
-    func test_execute_propogatesRepositoryError() async {
+    func test_execute_propagatesRepositoryError() async {
         // Arrange
         let (sut, repo) = makeSUT()
         let request = makeSignInRequest()
@@ -35,7 +37,7 @@ class SignInUseCaseTests: XCTestCase {
         }
     }
 
-    func test_execute_propogatesNetworkErrorOn401() async {
+    func test_execute_propagatesNetworkErrorOn401() async {
         // Arrange
         let (sut, repo) = makeSUT()
         let request = makeSignInRequest()
@@ -59,7 +61,7 @@ class SignInUseCaseTests: XCTestCase {
         XCTAssertEqual(repo.receivedRequests.count, 1)
     }
     
-    func test_execute_propogatesDecodingFailedError() async {
+    func test_execute_propagatesDecodingFailedError() async {
         // Arrange
         let (sut, repo) = makeSUT()
         let request = makeSignInRequest()
