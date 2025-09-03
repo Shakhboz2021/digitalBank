@@ -41,4 +41,21 @@ class SignInRepositoryTests: XCTestCase {
         XCTAssertEqual(client.callCounter, 1)
         XCTAssertEqual(client.receivedRequests.count, 1)
     }
+    
+    // MARK: - Happy-case tests
+    func test_signIn_deliversMappedResponseOnSuccess() async throws {
+        // Arrange
+        let (sut, client) = makeSUT()
+        let request: SignInModels.Request = .mock
+        let dtoResponse: SignInDTO.Response = .mock
+        client.result = .success(dtoResponse)
+        
+        //Act
+        let result = try await sut.signIn(request: request)
+        
+        // Assert
+        XCTAssertEqual(result, dtoResponse.toDomain())
+        XCTAssertEqual(client.callCounter, 1)
+        XCTAssertEqual(client.receivedRequests.count, 1)
+    }
 }
