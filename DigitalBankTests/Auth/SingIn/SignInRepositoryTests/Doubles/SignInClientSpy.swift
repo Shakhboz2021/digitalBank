@@ -11,7 +11,7 @@ import Foundation
 
 final class SignInClientSpy: SignInClient {
     // Observability
-    private(set) var received: [SignInDTO.Request] = []
+    private(set) var receivedRequests: [SignInDTO.Request] = []
     var result: Result<SignInDTO.Response, Error>?
 
     // Call count
@@ -20,7 +20,7 @@ final class SignInClientSpy: SignInClient {
         -> DigitalBank.SignInDTO.Response
     {
         callCounter += 1
-        received.append(request)
+        receivedRequests.append(request)
 
         if let result {
             switch result {
