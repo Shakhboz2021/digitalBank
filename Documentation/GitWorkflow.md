@@ -51,7 +51,7 @@ Biz **Conventional Commits** formatidan foydalanamiz.
 ```
 feat(auth): implement SwapKeyUseCase with tests
 fix(network): correct error mapping for non2xx responses
-refactor(ipinfo): extract DTO mapping to separate layer
+refactor(:): extract DTO mapping to separate layer
 test(auth): add sad path tests for SwapKeyUseCase
 docs(readme): add setup instructions
 ```
