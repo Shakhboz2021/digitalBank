@@ -23,7 +23,7 @@ class SignInUseCaseTests: XCTestCase {
     func test_execute_propagatesRepositoryError() async {
         // Arrange
         let (sut, repo) = makeSUT()
-        let request = makeSignInRequest()
+        let request: SignInModels.Request = .mock
 
         // Assign & Assert
         do {
@@ -40,7 +40,7 @@ class SignInUseCaseTests: XCTestCase {
     func test_execute_propagatesNetworkErrorOn401() async {
         // Arrange
         let (sut, repo) = makeSUT()
-        let request = makeSignInRequest()
+        let request: SignInModels.Request = .mock
         let expected = NetworkError.non2xx(status: 401)
 
         repo.result = .failure(expected)
@@ -64,7 +64,7 @@ class SignInUseCaseTests: XCTestCase {
     func test_execute_propagatesDecodingFailedError() async {
         // Arrange
         let (sut, repo) = makeSUT()
-        let request = makeSignInRequest()
+        let request: SignInModels.Request = .mock
         let underlyingError = NSError(domain: "decode", code: 0)
         let expected = NetworkError.decodingFailed(underlying: underlyingError)
         
@@ -89,9 +89,9 @@ class SignInUseCaseTests: XCTestCase {
     func test_execute_deliversResponseOnSuccess() async throws {
         // Arrange
         let (sut, repo) = makeSUT()
-        let request = makeSignInRequest()
-        
-        let expected = makeSignInResponse()
+        let request: SignInModels.Request = .mock
+
+        let expected: SignInModels.Response = .mock
         repo.result = .success(expected)
         
         // Act

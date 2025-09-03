@@ -69,3 +69,14 @@ extension SignInModels.Response {
         SignInBuilders.makeSignInResponse()
     }
 }
+
+extension SignInDTO.Response {
+    static var mock: Self {
+        .init(
+            code: 200,
+            message: "OK",
+            stringLine: "test-line",
+            deviceMyIdState: "A"
+        )
+    }
+}

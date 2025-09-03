@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @testable import DigitalBank
 
 extension SignInRepositoryTests {
@@ -14,7 +15,6 @@ extension SignInRepositoryTests {
         let sut = SignInRepositoryImpl(client: client)
         return (sut, client)
     }
-    func makeDomainRequest() -> SignInModels.Request {
-        makeSignInRequest()
-    }
+    func makeDomainRequest() -> SignInModels.Request { .mock }
+    func makeDTOResponse() -> SignInDTO.Response { .mock }
 }
