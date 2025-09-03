@@ -28,6 +28,8 @@ final class SwapKeyClientImplTests: XCTestCase {
         super.tearDown()
     }
 
+    
+    
     func test_init_doesNotRequestAnyData() {
         _ = SwapKeyClientImpl(
             network: spy,
