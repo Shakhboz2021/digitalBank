@@ -58,4 +58,21 @@ class SignInRepositoryTests: XCTestCase {
         XCTAssertEqual(client.callCounter, 1)
         XCTAssertEqual(client.receivedRequests.count, 1)
     }
+    
+    func test_signIn_sendsMappedDTORequestToClient() async throws {
+        // Arrange
+        let (sut, client) = makeSUT()
+        let domainRequest: SignInModels.Request = .mock
+        client.result = .success(.mock)
+        
+        // Act
+        _ = try await sut.signIn(request: domainRequest)
+        
+        // Assert
+        XCTAssertEqual(client.receivedRequests.count, 1)
+        guard let captured = client.receivedRequests.first else {
+            return XCTFail("No request captured")
+        }
+        XCTAssertEqual(captured, domainRequest.toDTO())
+    }
 }
