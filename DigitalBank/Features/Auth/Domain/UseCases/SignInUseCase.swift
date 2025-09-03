@@ -21,6 +21,6 @@ final class SignInUseCaseImpl: SignInUseCase {
     func execute(request: SignInModels.Request) async throws
         -> SignInModels.Response
     {
-        try await repository.check(request: request)
+        try await repository.signIn(request: request)
     }
 }

@@ -9,5 +9,5 @@ import Foundation
 
 protocol SignInRepository {
     // Domain model bilan ishlaydi; transport/JSON detallaridan xoli.
-    func check(request: SignInModels.Request) async throws -> SignInModels.Response
+    func signIn(request: SignInModels.Request) async throws -> SignInModels.Response
 }

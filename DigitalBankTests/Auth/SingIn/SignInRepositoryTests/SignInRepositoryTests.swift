@@ -19,7 +19,7 @@ class SignInRepositoryTests: XCTestCase {
         XCTAssertTrue(client.receivedRequests.isEmpty)
     }
     // MARK: - Sad-case tests
-    func test_check_propagatesClientError() async {
+    func test_signIn_propagatesClientError() async {
         // Arrange
         let (sut, client) = makeSUT()
         let request: SignInModels.Request = .mock
@@ -28,7 +28,7 @@ class SignInRepositoryTests: XCTestCase {
         
         // Act & Assert
         do {
-            _ = try await sut.check(request: request)
+            _ = try await sut.signIn(request: request)
             XCTFail("Expecterd to throw \(expected)")
         } catch let error as NetworkError {
             guard case let .non2xx(status) = error else {

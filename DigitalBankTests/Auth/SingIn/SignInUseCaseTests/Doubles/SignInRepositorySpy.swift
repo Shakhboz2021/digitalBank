@@ -19,7 +19,7 @@ class SignInRepositorySpy: SignInRepository {
     private(set) var checkCallCount = 0
 
     // MARK: - Protocol
-    func check(request: DigitalBank.SignInModels.Request) async throws
+    func signIn(request: DigitalBank.SignInModels.Request) async throws
         -> DigitalBank.SignInModels.Response
     {
         checkCallCount += 1

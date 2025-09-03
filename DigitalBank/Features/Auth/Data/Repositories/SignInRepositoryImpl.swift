@@ -11,7 +11,7 @@ class SignInRepositoryImpl: SignInRepository {
     private let client: SignInClient
 
     init(client: SignInClient) { self.client = client }
-    func check(request: SignInModels.Request) async throws
+    func signIn(request: SignInModels.Request) async throws
         -> SignInModels.Response
     {
         let dtoRequest = request.toDTO()
