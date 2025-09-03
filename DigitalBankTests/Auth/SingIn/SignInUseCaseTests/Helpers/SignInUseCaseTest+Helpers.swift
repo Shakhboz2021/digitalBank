@@ -10,10 +10,13 @@ import Foundation
 @testable import DigitalBank
 
 extension SignInUseCaseTests {
-    func makeSUT() -> (sut: SignInUseCaseImpl, repository: SignInRepositorySpy)
-    {
+    func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (
+        sut: SignInUseCaseImpl, repository: SignInRepositorySpy
+    ) {
         let repo = SignInRepositorySpy()
         let sut = SignInUseCaseImpl(repository: repo)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        trackForMemoryLeaks(repo, file: file, line: line)
         return (sut, repo)
     }
 }
