@@ -9,5 +9,12 @@ import Foundation
 @testable import DigitalBank
 
 extension SignInRepositoryTests {
-    
+    func makeSUT() -> (sut: SignInRepository, client: SignInClient) {
+        let client = SignInClientSpy()
+        let sut = SignInRepositoryImpl(client: client)
+        return (sut, client)
+    }
+    func makeDomainRequest() -> SignInModels.Request {
+        makeSignInRequest()
+    }
 }
