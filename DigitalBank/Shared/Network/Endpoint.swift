@@ -18,7 +18,7 @@ extension Endpoint {
         [
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "lang": "RU",
+            "lang": "uz",
             "Authorization": "KeychainAccess.getKey(key: .token)",
             "devicecode": "getDeviceID()",
             "device": "I",
