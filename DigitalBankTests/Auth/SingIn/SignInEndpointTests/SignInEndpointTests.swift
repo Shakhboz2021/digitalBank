@@ -101,5 +101,15 @@ class SignInEndpointTests: XCTestCase {
         XCTAssertTrue(absoluteURL.contains("q=search"))
         XCTAssertTrue(absoluteURL.contains("page=2"))
     }
+    
+    func test_makeRequest_throwsOnInvalidBodyEncoding() throws {
+        struct Invalid: Encodable {
+            let value: Double
+            func encode(to encoder: Encoder) throws {
+                throw EncodingError.invalidValue(value, .init(codingPath: [], debugDescription: "Invalid"))
+            }
+        }
+        XCTAssertThrowsError(try sut.makeRequest(body: Invalid(value: 1.0)))
+    }
 
 }

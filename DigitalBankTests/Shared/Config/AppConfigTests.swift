@@ -7,14 +7,18 @@
 
 import Foundation
 import XCTest
+
 @testable import DigitalBank
 
 final class AppConfigTests: XCTestCase {
-    func tes_baseURL_isValidInProduction() {
+    func test_baseURL_isValidInProduction() {
         // Arrange
         let url = AppConfig.baseURL
-        
+
         // Assert
-        XCTAssertTrue(url.absoluteString.hasPrefix("https"), "Expected https baseURL but got \(url)")
+        XCTAssertTrue(
+            url.absoluteString.hasPrefix("https"),
+            "Expected https baseURL but got \(url)"
+        )
     }
 }
