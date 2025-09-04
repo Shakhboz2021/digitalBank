@@ -9,7 +9,7 @@ import Foundation
 
 @testable import DigitalBank
 
-enum HTTTPTest {
+enum HTTPTest {
     static func response(
         endpoint: Endpoint,
         status: Int

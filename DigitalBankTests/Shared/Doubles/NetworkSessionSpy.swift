@@ -8,6 +8,7 @@
 import Foundation
 
 @testable import DigitalBank
+
 final class NetworkSessionSpy: NetworkSession {
     private(set) var receivedRequests: [URLRequest] = []
     var result: Result<(Data, URLResponse), Error>?

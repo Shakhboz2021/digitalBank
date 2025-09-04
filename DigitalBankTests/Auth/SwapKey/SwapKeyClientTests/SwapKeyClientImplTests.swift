@@ -68,7 +68,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         // AAA
         // MARK: - Arrange
         let body = Data(#"{"code":400,"msg":"Bad Request"}"#.utf8)
-        let http = HTTTPTest.response(endpoint: endpoint, status: 400)
+        let http = HTTPTest.response(endpoint: endpoint, status: 400)
         spy.result = .success((body, http))
 
         // MARK: - Act & Assert
@@ -92,7 +92,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         // AAA
         // MARK: - Arrange
         let body = Data(#"{"code":500,"msg":"Bad Request"}"#.utf8)
-        let http = HTTTPTest.response(endpoint: endpoint, status: 500)
+        let http = HTTPTest.response(endpoint: endpoint, status: 500)
         spy.result = .success((body, http))
 
         // MARK: - Act & Assert
@@ -116,7 +116,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         // (Arrange)Given
         let expectedDTO = SwapKeyDTO.Response.mock
         let data = try JSONEncoder().encode(expectedDTO)
-        let http = HTTTPTest.response(endpoint: endpoint, status: 200)
+        let http = HTTPTest.response(endpoint: endpoint, status: 200)
         spy.result = .success((data, http))
 
         // (Act)When
@@ -132,7 +132,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         let expectedDTO = SwapKeyDTO.Request.mock
         // Network javobi kerak emas; faqat body tekshiramiz
         let okBody = try JSONEncoder().encode(SwapKeyDTO.Response.mock)  // Data
-        let ok = HTTTPTest.response(
+        let ok = HTTPTest.response(
             endpoint: endpoint,
             status: 200
         )  // HTTPURLResponse
@@ -176,7 +176,7 @@ final class SwapKeyClientImplTests: XCTestCase {
         let expectedDTO = SwapKeyDTO.Request.mock
         let encodedBody = try customEncoder.encode(expectedDTO)
 
-        let okResponse = HTTTPTest.response(endpoint: endpoint, status: 200)
+        let okResponse = HTTPTest.response(endpoint: endpoint, status: 200)
         let okBody = try customEncoder.encode(SwapKeyDTO.Response.mock)
         spy.result = .success((okBody, okResponse))
 

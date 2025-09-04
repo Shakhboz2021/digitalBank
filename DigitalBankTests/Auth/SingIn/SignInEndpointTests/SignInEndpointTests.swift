@@ -57,21 +57,7 @@ class SignInEndpointTests: XCTestCase {
     }
 
     func test_signIn_encodesBodyCorrectly() throws {
-        let dto = SignInDTO.Request(
-            clientId: "id",
-            phoneNumber: "998901234567",
-            deviceType: "I",
-            deviceCode: "device-code",
-            deviceName: "iPhone",
-            version: "1.0",
-            password: "secret",
-            isPin: false,
-            appVersionCode: "100",
-            osVersion: "18.0",
-            appVersion: "1.0.0",
-            osSystemVersionApi: "iOS18",
-            userInfo: .mock
-        )
+        let dto: SignInDTO.Request = .mock
         
         let request = try sut.makeRequest(body: dto)
         
