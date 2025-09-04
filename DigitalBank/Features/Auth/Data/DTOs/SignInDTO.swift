@@ -8,7 +8,7 @@
 import Foundation
 
 enum SignInDTO {
-    struct Request: Encodable, Equatable {
+    struct Request: Codable, Equatable {
         let clientId: String
         let phoneNumber: String
         let deviceType: String
