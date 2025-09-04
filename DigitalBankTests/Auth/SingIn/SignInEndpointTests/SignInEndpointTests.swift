@@ -81,4 +81,24 @@ class SignInEndpointTests: XCTestCase {
         XCTAssertEqual(decodedBody, dto)
 
     }
+    
+    func test_signIn_includesQueryItems() throws {
+        // Arrange
+        struct QueryEndpoint: Endpoint {
+            let url = URL(string: "https://example.com/api")!
+            let method: HTTPMethod = .get
+            let query: [URLQueryItem] = [
+                URLQueryItem(name: "q", value: "search"),
+                URLQueryItem(name: "page", value: "2")
+            ]
+        }
+        let endpoint = QueryEndpoint()
+        // Act
+        let request = try endpoint.makeRequest()
+        
+        // Assert
+        let absoluteURL = try XCTUnwrap(request.url?.absoluteString)
+        XCTAssertTrue(absoluteURL.contains("q=search"))
+        XCTAssertTrue(absoluteURL.contains("page=2"))
+    }
 }
