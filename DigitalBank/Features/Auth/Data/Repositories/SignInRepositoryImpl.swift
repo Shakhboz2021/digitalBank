@@ -15,7 +15,7 @@ class SignInRepositoryImpl: SignInRepository {
         -> SignInModels.Response
     {
         let dtoRequest = request.toDTO()
-        let dtoResponse = try await client.check(request: dtoRequest)
+        let dtoResponse = try await client.signIn(request: dtoRequest)
         return dtoResponse.toDomain()
     }
 }

@@ -16,7 +16,7 @@ final class SignInClientSpy: SignInClient {
 
     // Call count
     var callCounter = 0
-    func check(request: DigitalBank.SignInDTO.Request) async throws
+    func signIn(request: DigitalBank.SignInDTO.Request) async throws
         -> DigitalBank.SignInDTO.Response
     {
         callCounter += 1

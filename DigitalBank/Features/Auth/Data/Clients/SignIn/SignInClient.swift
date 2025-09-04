@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SignInClient {
-    func check(request: SignInDTO.Request) async throws -> SignInDTO.Response
+    func signIn(request: SignInDTO.Request) async throws -> SignInDTO.Response
 }
