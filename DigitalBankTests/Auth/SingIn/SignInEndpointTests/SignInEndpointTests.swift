@@ -101,4 +101,5 @@ class SignInEndpointTests: XCTestCase {
         XCTAssertTrue(absoluteURL.contains("q=search"))
         XCTAssertTrue(absoluteURL.contains("page=2"))
     }
+
 }

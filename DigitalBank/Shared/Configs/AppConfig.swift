@@ -14,11 +14,16 @@ enum AppConfig {
     }
     static let environment: Environment = .production
     static var baseURL: URL {
+        let urlString: String
         switch environment {
         case .production:
-            URL(string: "https:")!
+            urlString = "https:"
         case .development:
-            URL(string: "https:")!
+            urlString = "https:"
         }
+        guard let url = URL(string: urlString) else {
+            preconditionFailure("Invalid Base URL: \(urlString)")
+        }
+        return url
     }
 }
