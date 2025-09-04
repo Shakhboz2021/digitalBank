@@ -29,7 +29,21 @@ Bu hujjat **DigitalBank iOS** loyihasida test yozish qoidalarini belgilaydi. Maq
 
 ---
 
-## 3) Client Tests
+## 3) Mapper Tests
+**Maqsad:** maydonlar **1:1** mos tushishi.
+
+**Holatlar**
+- `SignInModels.Request.toDTO` → DTO teng
+- `SignInDTO.Response.toDomain` → Domain teng
+
+---
+
+## 4) Endpoint Tests
+**Maqsad:** path, method, headers, query.
+
+---
+
+## 5) Client Tests
 **Maqsad:** `Endpoint.makeRequest`, headers, method, body-encoding, status handling, error mapping.  
 **Double:** `NetworkSessionSpy`
 
@@ -43,28 +57,22 @@ Bu hujjat **DigitalBank iOS** loyihasida test yozish qoidalarini belgilaydi. Maq
 
 ---
 
-## 4) Mapper Tests
-**Maqsad:** maydonlar **1:1** mos tushishi.
-
-**Holatlar**
-- `SignInModels.Request.toDTO` → DTO teng
-- `SignInDTO.Response.toDomain` → Domain teng
+## 6) Integration Tests
 
 ---
 
-## 5) Endpoint Tests
-**Maqsad:** path, method, headers, query.
+## 7) Presentation Tests
 
 ---
 
-## 6) Doubles (Spy/Stubs) Qoidalari
+## 8) Doubles (Spy/Stubs) Qoidalari
 - **Spy**: call count + parameter capture (`receivedRequests`, `checkCallCount`)
 - **Stub**: `result` orqali javobni boshqarish
 - **Helperlar**: `makeSUT()`, `makeRequest()`, `makeResponse()` → `Tests/.../Helpers` ichida
 
 ---
 
-## 7) Naming & Folder Structure
+## 9) Naming & Folder Structure
 - `DigitalBankTests/Auth/SignIn/SignInUseCaseTests.swift`
 - Doubles → `DigitalBankTests/Auth/SignIn/Doubles/`
 - Helpers → `DigitalBankTests/Auth/SignIn/Helpers/`
@@ -72,7 +80,7 @@ Bu hujjat **DigitalBank iOS** loyihasida test yozish qoidalarini belgilaydi. Maq
 
 ---
 
-## 8) MR Checklist (PR tekshiruv ro‘yxati)
+## 10) MR Checklist (PR tekshiruv ro‘yxati)
 - [ ] AAA (Arrange–Act–Assert) aniq ajratilgan
 - [ ] Transport / Decode / Non2xx holatlari testlangan
 - [ ] Endpoint method/path/headers tekshirilgan

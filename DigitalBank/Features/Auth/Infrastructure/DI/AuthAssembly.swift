@@ -10,6 +10,7 @@ import Foundation
 protocol AuthAssembling {
     func makeSwapKeyUseCase() -> SwapKeyUseCase
     func makeGetUserIPInfoUseCase() -> GetUserIPInfoUseCase
+    func makeSignInUseCase() -> SignInUseCase
 }
 
 class AuthAssembly: AuthAssembling {
@@ -32,5 +33,13 @@ class AuthAssembly: AuthAssembling {
         )
         let repository = GetUserIPInfoRepositoryImpl(client: client)
         return GetUserIPInfoUseCaseImpl(repository: repository)
+    }
+    func makeSignInUseCase() -> SignInUseCase {
+        let client = SignInClientImpl(
+            network: network,
+            endpoint: AuthEndpoint.signIn
+        )
+        let repository = SignInRepositoryImpl(client: client)
+        return SignInUseCaseImpl(repository: repository)
     }
 }

@@ -8,7 +8,15 @@
 import Foundation
 
 extension DIContainer {
+    func makeSwapKeyUseCase() -> SwapKeyUseCase {
+        auth.makeSwapKeyUseCase()
+    }
+
     func makeGetUserIPInfoUseCase() -> GetUserIPInfoUseCase {
         auth.makeGetUserIPInfoUseCase()
+    }
+
+    func makeSignInUseCase() -> SignInUseCase {
+        auth.makeSignInUseCase()
     }
 }
