@@ -20,19 +20,31 @@ class SignInEndpointTests: XCTestCase {
         // Assert
         XCTAssertEqual(request.httpMethod, HTTPMethod.post.rawValue)
     }
-    
+
     func test_signIn_hasExpectedPath() throws {
         let request = try sut.makeRequest()
         XCTAssertEqual(request.url?.path, "/USER_SIGN_IN_NEW")
     }
-    
+
     func test_signIn_setsDefaultHeaders() throws {
         let request = try sut.makeRequest()
-        XCTAssertEqual(request.value(forHTTPHeaderField: "Accept"), "application/json")
-        XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
+        XCTAssertEqual(
+            request.value(forHTTPHeaderField: "Accept"),
+            "application/json"
+        )
+        XCTAssertEqual(
+            request.value(forHTTPHeaderField: "Content-Type"),
+            "application/json"
+        )
         XCTAssertEqual(request.value(forHTTPHeaderField: "lang"), "uz")
         XCTAssertEqual(request.value(forHTTPHeaderField: "device"), "I")
-            // Dynamic headerlar — faqat mavjudligini tekshiramiz
+        // Dynamic headerlar — faqat mavjudligini tekshiramiz
         XCTAssertNotNil(request.value(forHTTPHeaderField: "Authorization"))
-        XCTAssertNotNil(request.value(forHTTPHeaderField: "devicecode"))    }
+        XCTAssertNotNil(request.value(forHTTPHeaderField: "devicecode"))
+    }
+    
+    func test_signIn_hasNoBody_whenNilPassed() throws {
+        let request = try sut.makeRequest()
+        XCTAssertNil(request.httpBody)
+    }
 }
