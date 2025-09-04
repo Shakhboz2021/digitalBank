@@ -20,7 +20,7 @@ final class SignInClientImplTests: XCTestCase {
         // Assert
         XCTAssertTrue(network.receivedRequests.isEmpty)
     }
-
+    // MARK: - Sad-case tests
     func test_signIn_propagatesNon2xxAsNetworkError() async {
         // Arrange
         let sut = SignInClientImpl(network: network, endpoint: endpoint)
@@ -70,6 +70,28 @@ final class SignInClientImplTests: XCTestCase {
             XCTFail("Unexpected error: \(error)")
         }
 
+        XCTAssertEqual(network.receivedRequests.count, 1)
+    }
+
+    // MARK: - Happy-case tests
+    func test_signIn_deliversDTOResponseOn200() async throws {
+        // Arrange
+        let network = NetworkSessionSpy()
+        let endpoint: Endpoint = AuthEndpoint.signIn
+        let sut = SignInClientImpl(network: network, endpoint: endpoint)
+
+        let expectedDTO = SignInDTO.Response.mock
+        let ok = HTTPTest.response(endpoint: endpoint, status: 200)
+        let okData = try JSONEncoder().encode(expectedDTO)
+        network.result = .success((okData, ok))
+
+        let dtoReq = SignInDTO.Request.mock
+
+        // Act
+        let received = try await sut.signIn(request: dtoReq)
+
+        // Assert
+        XCTAssertEqual(received, expectedDTO)
         XCTAssertEqual(network.receivedRequests.count, 1)
     }
 }

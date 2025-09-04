@@ -39,7 +39,7 @@ enum SignInDTO {
         }
     }
 
-    struct Response: Decodable, Equatable {
+    struct Response: Codable, Equatable {
         let code: Int?
         let message: String?
         let stringLine: String?
