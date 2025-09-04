@@ -32,10 +32,12 @@ extension Endpoint {
     ) throws
         -> URLRequest
     {
-        guard var components = URLComponents(
-            url: url,
-            resolvingAgainstBaseURL: false
-        ) else {
+        guard
+            var components = URLComponents(
+                url: url,
+                resolvingAgainstBaseURL: false
+            )
+        else {
             throw NetworkError.invalidRequestURL
         }
         components.queryItems = query.isEmpty ? nil : query
