@@ -11,6 +11,7 @@ enum AuthEndpoint: Endpoint {
     case swapKey
     case swapKeyPin
     case getUserIPInfo
+    case signIn
 
     var url: URL {
         switch self {
@@ -20,12 +21,14 @@ enum AuthEndpoint: Endpoint {
             AppConfig.baseURL.appendingPathComponent("v1/swapKeyPin")
         case .getUserIPInfo:
             ExternalConfig.getUserIPInfoURL
+        case .signIn:
+            AppConfig.baseURL.appendingPathComponent("/USER_SIGN_IN_NEW")
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .swapKey, .swapKeyPin:
+        case .swapKey, .swapKeyPin, .signIn:
             return .post
         case .getUserIPInfo:
             return .get
