@@ -42,9 +42,17 @@ class SignInEndpointTests: XCTestCase {
         XCTAssertNotNil(request.value(forHTTPHeaderField: "Authorization"))
         XCTAssertNotNil(request.value(forHTTPHeaderField: "devicecode"))
     }
-    
+
     func test_signIn_hasNoBody_whenNilPassed() throws {
         let request = try sut.makeRequest()
         XCTAssertNil(request.httpBody)
+    }
+
+    func test_signIn_absoluteURL_isCorrect() throws {
+        let request = try sut.makeRequest()
+        XCTAssertEqual(
+            request.url?.absoluteString,
+            sut.url.absoluteString
+        )
     }
 }
