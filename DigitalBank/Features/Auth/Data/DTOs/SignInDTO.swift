@@ -16,7 +16,7 @@ enum SignInDTO {
         let deviceName: String
         let version: String
         let password: String
-        let isPin: Bool
+        let isPin: String
         let appVersionCode: String
         let osVersion: String
         let appVersion: String

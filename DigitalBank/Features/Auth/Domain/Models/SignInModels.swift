@@ -16,25 +16,25 @@ enum SignInModels {
         let deviceName: String
         let version: String
         let password: String
-        let isPin: Bool
+        let isPin: String
         let appVersionCode: String
         let osVersion: String
         let appVersion: String
         let osSystemVersionApi: String
         let userInfo: UserIPInfo
         init(
-            clientId: String,
             phoneNumber: String,
+            password: String,
             deviceType: String,
             deviceCode: String,
             deviceName: String,
-            version: String,
-            password: String,
-            isPin: Bool,
-            appVersionCode: String,
             osVersion: String,
+            appVersionCode: String,
             appVersion: String,
             osSystemVersionApi: String,
+            version: String,
+            isPin: String,
+            clientId: String,
             userInfo: UserIPInfo
         ) {
             self.clientId = clientId

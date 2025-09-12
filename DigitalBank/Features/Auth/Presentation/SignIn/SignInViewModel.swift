@@ -34,18 +34,18 @@ final class SignInViewModel: ObservableObject {
         Task {
             do {
                 let req = SignInModels.Request(
-                    clientId: "-2",
                     phoneNumber: phone,
-                    deviceType: DeviceInfo.current().deviceType,
-                    deviceCode: DeviceInfo.current().deviceCode,
-                    deviceName: DeviceInfo.current().deviceName,
-                    version: "0",
                     password: password,
-                    isPin: false,
+                    deviceType: DeviceInfo.deviceType,
+                    deviceCode: DeviceInfo.deviceCode,
+                    deviceName: DeviceInfo.deviceName,
+                    osVersion: DeviceInfo.systemVersion,
                     appVersionCode: AppInfo.buildNumber,  // Bundle.main.infoDictionary?["CFBundleVersion"]
-                    osVersion: DeviceInfo.current().systemVersion,
-                    appVersion: AppInfo.releaseVersion,  // infoDictionary?["CFBundleShortVersionString"]
+                    appVersion: AppInfo.releaseVersion,  // Bundle.main.infoDictionary?["CFBundleShortVersionString"]
                     osSystemVersionApi: AppInfo.releaseVersion,
+                    version: "0",
+                    isPin: "0",
+                    clientId: "-2",
                     userInfo: .mock
                 )
                 let result = try await signIn.execute(request: req)

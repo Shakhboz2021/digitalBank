@@ -8,19 +8,25 @@
 import UIKit
 
 enum DeviceInfo {
-    static func current() -> AppDevice {
-        .init(
-            deviceType: "I",
-            deviceCode: Keychain.get(key: .deviceID),  
-            deviceName: UIDevice.current.name,
-            systemVersion: UIDevice.current.systemName
-        )
+    static var deviceType: String { "I" }
+
+    static var deviceCode: String {
+        Keychain.get(key: .deviceID)
     }
+
+    static var deviceName: String {
+        UIDevice.current.name
+    }
+
+    static var systemVersion: String {
+        UIDevice.current.systemVersion
+    }
+
 }
 
 // 🔒 Private extension – model identifier ("iPhone16,2")
 extension UIDevice {
-    fileprivate var modelIdentifier: String {
+    static var modelIdentifier: String {
         var systemInfo = utsname()
         uname(&systemInfo)
         return withUnsafePointer(to: &systemInfo.machine) {
@@ -29,7 +35,7 @@ extension UIDevice {
             }
         }
     }
-    fileprivate var modelName: String {
+    static var modelName: String {
         let identifier = modelIdentifier
 
         let map: [String: String] = [
