@@ -12,7 +12,8 @@ enum DeviceInfo {
         .init(
             deviceType: "I",
             deviceCode: Keychain.get(key: .deviceID),  
-            deviceName: UIDevice.current.name
+            deviceName: UIDevice.current.name,
+            systemVersion: UIDevice.current.systemName
         )
     }
 }

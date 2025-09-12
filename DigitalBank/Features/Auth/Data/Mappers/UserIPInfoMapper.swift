@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+
 extension UserIPInfo {
     // Domain -> DTO
     func toDTO() -> UserIPInfoDTO {
