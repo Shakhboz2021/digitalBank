@@ -5,19 +5,9 @@
 //  Created by Muhammad on 15/09/25.
 //
 
-import SwiftUI
+import Foundation
 
+@MainActor
 final class AuthRouter: ObservableObject {
-    @ObservedObject var shared: SharedRouter
-    init(shared: SharedRouter) {
-        self.shared = shared
-    }
-    func loginSuccess() { shared.showSMS = true }
-    func showPin() { shared.showPIN = true }
-    func showSuccess() { shared.showSuccess = true }
-    
-    func popToSignIn() {
-        shared.showSMS = false
-        shared.showPIN = false
-    }
+        // hozircha bo'sh yoki kelajak uchun boshqa oqimlar
 }

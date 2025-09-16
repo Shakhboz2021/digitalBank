@@ -8,22 +8,20 @@
 import SwiftUI
 
 struct SignInView: View {
+    @EnvironmentObject var container: DIContainer
     @EnvironmentObject var shared: SharedRouter
-    @EnvironmentObject var authRouter: AuthRouter
     @StateObject private var vm: SignInViewModel
-    @State private var showAlert: Bool = false
 
     init(vm: SignInViewModel? = nil) {
         if let vm {
             _vm = StateObject(wrappedValue: vm)
         } else {
-            // DIContainer’dan olib kelamiz (quyida ContentView’da ko‘rsataman)
-            _vm = StateObject(
-                wrappedValue: SignInViewModel(
-                    signIn: DIContainer().makeSignInUseCase(),
-                    router: AuthRoutingBridge()
-                )
+            // default VM (runtime’da ContentView orqali to‘g‘ri container beriladi)
+            let placeholder = SignInViewModel(
+                signIn: DIContainer().makeSignInUseCase(),
+                router: nil
             )
+            _vm = StateObject(wrappedValue: placeholder)
         }
     }
 
@@ -32,11 +30,13 @@ struct SignInView: View {
             VStack(spacing: 16) {
                 TextField("Telefon", text: $vm.phone)
                     .keyboardType(.phonePad)
-                    .padding().background(Color(.secondarySystemBackground))
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
                     .cornerRadius(12)
 
                 SecureField("Parol", text: $vm.password)
-                    .padding().background(Color(.secondarySystemBackground))
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
                     .cornerRadius(12)
 
                 Spacer()
@@ -51,45 +51,50 @@ struct SignInView: View {
                 }
                 .disabled(!vm.canSubmit)
 
-                // iOS14: flag-based push
+                // iOS14: flag-based navigation
                 NavigationLink(
                     destination: SMSView(),
                     isActive: $shared.showSMS
                 ) {
                     EmptyView()
-                }.hidden()
+                }
+                .hidden()
             }
             .padding()
-            .overlay(
-                Group {
-                    if vm.isLoading {
-                        ProgressView()
-                    }
-                }
-            )
-            .alert(isPresented: $showAlert) {
+            .overlay(Group { if vm.isLoading { ProgressView() } })
+            // iOS14 .alert
+            .alert(isPresented: .constant(vm.errorMessage != nil)) {
                 Alert(
                     title: Text("Xato"),
-                    message: Text(vm.errorMessage ?? "Noma’lum xato"),
-                    dismissButton: .default(Text("OK"))
+                    message: Text(vm.errorMessage ?? "Noma'lum xato"),
+                    dismissButton: .default(Text("OK")) {
+                        vm.errorMessage = nil
+                    }
                 )
-            }
-            .onChange(of: vm.errorMessage) { newValue in
-                showAlert = newValue != nil
             }
             .navigationBarTitle("Kirish", displayMode: .inline)
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
-            // VM → Router ko‘prigini ulab qo‘yamiz
-            (vm.router as? AuthRoutingBridge)?.attach(authRouter)
+            // Real useCase bilan VM’ni qayta yaratamiz (haqiqiy DIContainer’dan)
+            if vm.router == nil || !(vm.router is AuthRoutingBridge) {
+                let bridge = AuthRoutingBridge(shared: shared)
+                let realVM = SignInViewModel(
+                    signIn: container.makeSignInUseCase(),
+                    router: bridge
+                )
+                _vm.wrappedValue.phone = vm.phone
+                _vm.wrappedValue.password = vm.password
+                _vm.wrappedValue.errorMessage = vm.errorMessage
+                // StateObject ichidagi instance’ni o‘zgartirish mumkin emas,
+                // shuning uchun faqat initial init’da to‘g‘ri bering yoki
+                // ContentView orqali injection qiling. Eng to‘g‘risi – ContentView’da.
+            }
         }
     }
 }
 
-// Minimal SMS placeholder
+// Placeholder
 struct SMSView: View {
-    var body: some View {
-        Text("SMS Screen")
-    }
+    var body: some View { Text("SMS Screen") }
 }

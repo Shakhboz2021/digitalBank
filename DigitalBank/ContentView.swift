@@ -8,24 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var container: DIContainer
     @StateObject private var shared = SharedRouter()
-    @StateObject private var authRouter: AuthRouter
-    private let container = DIContainer()
-
-    init() {
-        let shared = SharedRouter()
-        _authRouter = StateObject(wrappedValue: AuthRouter(shared: shared))
-    }
-
+    
     var body: some View {
-        // DI container’dan haqiqiy usecase
-        let vm = SignInViewModel(
-            signIn: container.makeSignInUseCase(),
-            router: AuthRoutingBridge()
-        )
-
-        SignInView(vm: vm)
+        let bridge = AuthRoutingBridge(shared: shared)
+        let vm = SignInViewModel(signIn: container.makeSignInUseCase(), router: bridge)
+        
+        return SignInView(vm: vm)
             .environmentObject(shared)
-            .environmentObject(authRouter)
     }
 }

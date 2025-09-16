@@ -7,14 +7,29 @@
 
 import Foundation
 
+@MainActor
 final class SharedRouter: ObservableObject {
+        // Navigation flags
     @Published var showSMS = false
-    @Published var showPIN = false
-    @Published var showSuccess = false
-
+    
+        // Payloads
+    @Published var smsPayload: (phone: String, stringLine: String?)?
+    
+        // Errors (agar kerak bo‘lsa)
+    @Published var alertMessage: String?
+    
+    func showSMS(phone: String, stringLine: String?) {
+        smsPayload = (phone, stringLine)
+        showSMS = true
+    }
+    
+    func showError(_ message: String) {
+        alertMessage = message
+    }
+    
     func popToRoot() {
-        showPIN = false
         showSMS = false
-        showSuccess = false
+        smsPayload = nil
+        alertMessage = nil
     }
 }

@@ -7,14 +7,24 @@
 
 import Foundation
 
+/// ViewModel -> Router ko'prigi (UI-ga bog'lanmaydi)
 @MainActor
 final class AuthRoutingBridge: SignInRouting {
-    private weak var authRouter: AuthRouter?
+    private weak var shared: SharedRouter?
 
-    func attach(_ router: AuthRouter) { self.authRouter = router }
+    init(shared: SharedRouter? = nil) {
+        self.shared = shared
+    }
 
-    func showSMS() { authRouter?.loginSuccess() }
+    func attach(_ shared: SharedRouter) {
+        self.shared = shared
+    }
 
-    func showError(_ message: String) {}
+    func showSMS(phone: String, stringLine: String?) {
+        shared?.showSMS(phone: phone, stringLine: stringLine)
+    }
 
+    func showError(_ message: String) {
+        shared?.showError(message)
+    }
 }
