@@ -47,7 +47,7 @@ class SwapKeyClientImpl: SwapKeyClient {
         }
 
         guard (200...299).contains(http.statusCode) else {
-            throw NetworkError.non2xx(status: http.statusCode, data: data)
+            throw NetworkError.non2xx(status: http.statusCode)
         }
 
         do {

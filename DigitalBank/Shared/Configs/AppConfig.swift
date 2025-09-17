@@ -12,12 +12,12 @@ enum AppConfig {
         case production
         case development
     }
-    static let environment: Environment = .development
+    static let environment: Environment = .production
     static var baseURL: URL {
         let urlString: String
         switch environment {
         case .production:
-            urlString = "https://ra.ubank.uz/api"
+            urlString = "https://ra.ubank.uz/api/"
         case .development:
             urlString = "https://my.fido.uz/dbgmkb/"
         }

@@ -9,7 +9,7 @@ import Foundation
 
 /// Umumiy network xatolari (OCP: keyin yangi case qo‘shish oson)
 enum NetworkError: Error {
-    case non2xx(status: Int, data: Data?)  // ⬅️ data qo‘shildi
+    case non2xx(status: Int)  // ⬅️ data qo‘shildi
     case decodingFailed(underlying: Error?)
     case transport(underlying: Error)
     case invalidResponse
@@ -33,10 +33,7 @@ extension NetworkError: LocalizedError {
         case .decodingFailed:
             return "Ma’lumotni o‘qishda xatolik."
 
-        case .non2xx(let status, let data):
-            if let msg = Self.parseServerMessage(from: data) {
-                return msg  // backenddan kelgan xabar
-            }
+        case .non2xx(let status):
             return "Server xatosi (\(status))."
         }
     }

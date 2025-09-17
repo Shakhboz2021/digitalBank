@@ -219,7 +219,7 @@ extension NetworkState {
         apiEnvironment = .development
         networkProvider = .urlSession
         activeRequestCount = 0
-        isGlobalLoading = false
+        isLoading = false
         isMaintenanceMode = false
     }
 }

@@ -22,7 +22,7 @@ enum AuthEndpoint: Endpoint {
         case .getUserIPInfo:
             ExternalConfig.getUserIPInfoURL
         case .signIn:
-            AppConfig.baseURL.appendingPathComponent("/USER_SIGN_IN_NEW")
+            AppConfig.baseURL.appendingPathComponent("USER_SIGN_IN_NEW")
         }
     }
 

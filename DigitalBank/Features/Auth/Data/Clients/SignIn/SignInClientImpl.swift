@@ -28,7 +28,7 @@ class SignInClientImpl: SignInClient {
 
         guard (200...300).contains(httpResponse.statusCode) else {
             throw NetworkError
-                .non2xx(status: httpResponse.statusCode, data: data)
+                .non2xx(status: httpResponse.statusCode)
         }
         do {
             return try JSONDecoder().decode(SignInDTO.Response.self, from: data)
