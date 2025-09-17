@@ -21,7 +21,7 @@ struct NetworkState {
     var networkProvider: NetworkProviderType = .urlSession
 
     // MARK: - Loading States
-    var isGlobalLoading: Bool = false
+    var isLoading: Bool = false
     var activeRequestCount: Int = 0
 
     // MARK: - Maintenance
@@ -203,7 +203,7 @@ extension NetworkState {
 
     /// Update global loading state based on active requests
     private mutating func updateGlobalLoadingState() {
-        isGlobalLoading = activeRequestCount > 0
+        isLoading = activeRequestCount > 0
     }
 
     /// Set maintenance mode
