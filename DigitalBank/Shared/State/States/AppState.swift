@@ -28,7 +28,7 @@ extension AppState {
     }
 
     /// Check if app is in loading state
-    var isLoading: Bool {
+    var isGlobalLoading: Bool {
         navigationState.isNavigationLoading
             || networkState.isLoading
     }
