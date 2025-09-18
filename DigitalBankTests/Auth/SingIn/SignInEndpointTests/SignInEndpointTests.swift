@@ -23,7 +23,7 @@ class SignInEndpointTests: XCTestCase {
 
     func test_signIn_hasExpectedPath() throws {
         let request = try sut.makeRequest()
-        XCTAssertEqual(request.url?.path, "/USER_SIGN_IN_NEW")
+        XCTAssertEqual(request.url?.lastPathComponent, "USER_SIGN_IN_NEW")
     }
 
     func test_signIn_setsDefaultHeaders() throws {

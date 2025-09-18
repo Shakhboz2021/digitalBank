@@ -18,7 +18,7 @@ enum SignInBuilders {
         deviceName: String = "iPhone",
         version: String = "1.0",
         password: String = "secret",
-        isPin: Bool = false,
+        isPin: String = "0",
         appVersionCode: String = "100",
         osVersion: String = "18.0",
         appVersion: String = "1.0.0",
@@ -26,18 +26,18 @@ enum SignInBuilders {
         userInfo: UserIPInfo = .mock
     ) -> SignInModels.Request {
         .init(
-            clientId: clientId,
-            phoneNumber: phoneNumber,
+            phoneNumber: clientId,
+            password: phoneNumber,
             deviceType: deviceType,
             deviceCode: deviceCode,
             deviceName: deviceName,
-            version: version,
-            password: password,
-            isPin: isPin,
-            appVersionCode: appVersionCode,
-            osVersion: osVersion,
-            appVersion: appVersion,
-            osSystemVersionApi: osSystemVersionApi,
+            osVersion: version,
+            appVersionCode: password,
+            appVersion: isPin,
+            osSystemVersionApi: appVersionCode,
+            version: osVersion,
+            isPin: appVersion,
+            clientId: osSystemVersionApi,
             userInfo: userInfo
         )
     }
@@ -80,7 +80,7 @@ extension SignInDTO.Request {
             deviceName: "iPhone",
             version: "1.0",
             password: "secret",
-            isPin: false,
+            isPin: "0",
             appVersionCode: "100",
             osVersion: "18.0",
             appVersion: "1.0.0",
